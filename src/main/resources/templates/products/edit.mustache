@@ -1,0 +1,21 @@
+{{>layouts/header}}
+{{#product}}
+    <form class="container" action="/products/update" method="post">
+        <input type="hidden" name="id" value={{id}}>
+        <div class="mb-3">
+            <label class="form-label">상품명</label>
+            <input class="form-control" name="pname" value={{pname}}>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">가격</label>
+            <textarea class="form-control" name="pprice">{{pprice}}</textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">이미지</label>
+            <input class="form-control" name="pimg" value={{pimg}}>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="/products/{{id}}">Back</a>
+    </form>
+{{/product}}
+{{>layouts/footer}}

@@ -1,0 +1,18 @@
+{{>layouts/header}}
+<form class="container" action="/products/create" method="post">
+    <div class="mb-3">
+        <label class="form-label">상품명</label>
+        <input class="form-control" name="pname">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">상품가격</label>
+        <textarea class="form-control" name="pprice"></textarea>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">이미지</label>
+        <input class="form-control" name="pimg">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a href="/products">목록 페이지</a>
+</form>
+{{>layouts/footer}}

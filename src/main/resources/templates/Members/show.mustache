@@ -1,0 +1,9 @@
+{{>layouts/header}}
+<h1>User Details</h1>
+<p><strong>ID:</strong> {{member.userid}}</p>
+<p><strong>Username:</strong> {{member.username}}</p>
+<p><strong>Email:</strong> {{member.email}}</p>
+<a href="/members/all">Back to User List</a>
+<a href="/members/{{member.userid}}/edit">Edit</a>
+<a href="/members/{{member.userid}}/delete">Delete</a>
+{{>layouts/footer}}

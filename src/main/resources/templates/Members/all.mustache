@@ -1,0 +1,14 @@
+{{>layouts/header}}
+<h1>All Users</h1>
+<ul>
+    {{#members}}
+        <li>
+            <a href="/members/{{userid}}">{{username}}</a>
+            <a href="/members/{{userid}}/edit">Edit</a>
+            <a href="/members/{{userid}}/delete">Delete</a>
+        </li>
+    {{/members}}
+</ul>
+<a href="/members/new">Create New User</a>
+{{>layouts/footer}}
+

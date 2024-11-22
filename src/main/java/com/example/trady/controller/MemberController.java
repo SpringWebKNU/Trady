@@ -20,11 +20,15 @@ public class MemberController {
     @Autowired
     MemberRepository memberRepository;
 
-    @GetMapping("/members/new")
-    public String newMemberForm() {
-        return "members/new";
+    @GetMapping("/members/login")
+    public String memberLoginForm() {
+        return "members/login";
     }
 
+    @GetMapping("/members/join")
+    public String newMemberJoinForm() {
+        return "members/join";
+    }
 
     @PostMapping("/members/create")
     public String createUser(MemberForm memberForm) {

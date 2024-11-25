@@ -1,9 +1,10 @@
-INSERT INTO member(username, password, email)
+INSERT INTO member(username, password, email, phonenumber, addr)
 VALUES
-    ('dododo','123','123@naver.com'),
-    ('fofofo','456','456@naver.com'),
-    ('gogogo','789','789@naver.com'),
-    ('hohoho','012','012@naver.com');
+    ('dododo','123','123@naver.com', '010-1234-5678', 'gangnam'),
+    ('fofofo','456','456@naver.com', '010-9876-5432', 'yongin'),
+    ('gogogo','789','789@naver.com', '010-1928-3746', 'suwon'),
+    ('hohoho','012','012@naver.com', '010-5473-3245', 'seoul');
+
 
 
 -- Pcategory 테이블에 데이터 삽입

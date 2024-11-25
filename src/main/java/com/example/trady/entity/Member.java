@@ -4,10 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
+@Setter
+@Getter
 @Entity @ToString @Slf4j @NoArgsConstructor
 public class Member {
 
@@ -17,50 +21,21 @@ public class Member {
     private String username;
     private String password;
     private String email;
+    private String phonenumber;
+    private String addr;
 
 
-    // Constructor
-    public Member(Long userid, String username, String password, String email) {
+    public Member(Long userid, String username, String password, String email, String phonenumber, String addr) {
         this.userid = userid;
         this.username = username;
         this.password = password;
         this.email = email;
-    }
-
-    public Long getUserid() {
-        return userid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setUserid(Long userid) {
-        this.userid = userid;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        this.phonenumber = phonenumber;
+        this.addr = addr;
     }
 
     public void logInfo(){
-        log.info("userid: {}, username: {}, password: {}, email: {}", userid, username, password, email);
+        log.info("userid: {}, username: {}, password: {}, email: {}, phonenumber: {}, addr: {}", userid, username, password, email, phonenumber, addr);
     }
 
 }

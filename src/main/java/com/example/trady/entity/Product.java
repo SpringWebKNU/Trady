@@ -1,9 +1,6 @@
 package com.example.trady.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,24 +17,30 @@ public class Product {
     private String pprice;
     private String pimg;
 
+    // Category와 연관 관계 설정
+    @ManyToOne
+    @JoinColumn(name = "pcategory_id",  referencedColumnName = "id") // 외래 키 이름
+    private Pcategory pcategory;
+
+
+    public String getPcategoryName() {
+        return pcategory != null ? pcategory.getPname() : "카테고리 없음";
+    }
+
+    public boolean isInCategory(Long categoryId) {
+        return this.pcategory != null && this.pcategory.getId().equals(categoryId);
+    }
+
+
 
     // Constructor
-    public Product(Long id, String pname, String pprice, String pimg) {
+    public Product(Long id, String pname, String pprice, String pimg, Pcategory pcategory) {
         this.id = id;
         this.pname = pname;
         this.pprice = pprice;
         this.pimg = pimg;
+        this.pcategory = pcategory;
     }
-
-//    public void patch(Product product) {
-//        if (product.pname != null) {
-//            this.pname = product.pname;
-//        }
-//        if (product.pprice != null) {
-//            this.pprice = product.pprice;
-//        }
-//    }
-
 
     public Long getId() {
         return id;
@@ -55,6 +58,8 @@ public class Product {
         return pimg;
     }
 
+
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -69,6 +74,15 @@ public class Product {
 
     public void setPimg(String pimg) {
         this.pimg = pimg;
+    }
+
+
+    public Pcategory getPcategory() {
+        return pcategory;
+    }
+
+    public void setPcategory(Pcategory pcategory) {
+        this.pcategory = pcategory;
     }
 
     public void logInfo(){

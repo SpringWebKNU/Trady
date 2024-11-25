@@ -1,23 +1,54 @@
 {{>layouts/header}}
-<table class="table">
-    <thead>
-    <tr>
-        <!--scope="col"은 th요소가 열 전체에 대해 헤더역할을 한다는 뜻-->
-        <th scope="col">Id</th><th scope="col">Title</th><th scope="col">Content</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#product}}
-        <tr>
-            <th>{{id}}</th>
-            <td>{{pname}}</td>
-            <td>{{pprice}}</td>
-            <td>{{pimg}}</td>
-        </tr>
-    {{/product}}
-    </tbody>
-</table>
-<a href="/products/{{product.id}}/edit" class="btn btn-primary">Edit</a>
-<a href="/products/{{product.id}}/delete" class="btn btn-primary">Delete</a>
-<a href="/products/all">목록 페이지</a>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Back to List Button (상품사진 위쪽) -->
+        <div class="col-12 mb-3">
+            <a href="/products/all" class="btn btn-secondary">목록 페이지</a>
+        </div>
+    </div>
+
+    <h2 class="mb-4">상품 상세페이지</h2>
+
+    <div class="row">
+        {{#product}}
+            <div class="col-md-6">
+                <!-- Product Image (왼쪽 배치) -->
+                <div class="mb-4">
+                    <img src="../images/{{pimg}}" class="img-fluid shadow-sm" alt="{{pname}}" style="height: 400px; object-fit: cover;">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <!-- Action Buttons (상세, 수정, 삭제) on top-right, inline) -->
+                <div class="d-flex justify-content-end mb-3">
+                    <a href="/products/{{id}}" class="btn btn-info btn-sm me-2">상세보기</a>
+                    <a href="/products/{{id}}/edit" class="btn btn-warning btn-sm me-2">수정하기</a>
+                    <a href="/products/{{id}}/delete" class="btn btn-danger btn-sm">삭제하기</a>
+                </div>
+
+                <!-- Product Details (오른쪽 배치, 버튼들 포함) -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <!-- Product Name (상품명 크게) -->
+                        <h3 class="card-title">{{pname}}</h3>
+
+                        <!-- Product Category (상품명 옆에 작은 크기) -->
+                        <p class="card-text text-muted d-inline-block me-3">{{pcategoryName}}</p>
+
+                        <!-- Product Price (가격 크게) -->
+                        <p class="card-text text-success fs-4">{{pprice}} 원</p>
+
+                        <!-- 판매하기와 구매하기 버튼도 오른쪽 정렬 -->
+                        <div class="d-flex justify-content-end mt-3">
+                            <a href="/products/{{id}}/sell" class="btn btn-primary btn-lg">판매</a>
+                            <a href="/products/{{id}}/buy" class="btn btn-success btn-lg ms-3">구매</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/product}}
+    </div>
+</div>
+
 {{>layouts/footer}}

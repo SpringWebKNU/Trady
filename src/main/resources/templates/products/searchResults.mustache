@@ -1,0 +1,35 @@
+{{>layouts/header}}
+
+<div class="container mt-4">
+    <h3>검색어: {{keyword}}</h3>
+
+    <div class="row">
+        {{#products}}
+            <div class="col-md-4 mb-4">
+                <!-- Product Card -->
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{pname}}</h5>
+                        <p class="card-text text-muted">{{pprice}} 원</p>
+                        <a href="/products/{{id}}" class="text-decoration-none">
+                        <img src="../images/{{pimg}}" alt="Product Image" width="200" />
+                        </a>
+                        <p>ID: {{id}}</p>
+                    </div>
+                </div>
+            </div>
+        {{/products}}
+
+        {{^products}}
+            <p>검색된 상품이 없습니다.</p>
+        {{/products}}
+
+    </div>
+
+    <!-- Add Product Button -->
+    <div class="text-end mt-3">
+        <a href="/products/all" class="btn btn-success">이전으로</a>
+    </div>
+</div>
+
+{{>layouts/footer}}

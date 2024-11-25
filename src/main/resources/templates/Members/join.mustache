@@ -19,6 +19,16 @@
                     <input type="email" id="email" class="form-control" name="email" required>
                 </div>
 
+                <div class="mb-3">
+                    <label for="phonenumber" class="form-label"><strong>전화번호:</strong></label>
+                    <input type="tel" id="phonenumber" class="form-control" name="phonenumber" pattern="^\d{3}-\d{3,4}-\d{4}$" placeholder="010-1234-5678" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="addr" class="form-label"><strong>주소:</strong></label>
+                    <textarea id="addr" class="form-control" name="addr" rows="3" required></textarea>
+                </div>
+
                 <hr>
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">가입하기</button>

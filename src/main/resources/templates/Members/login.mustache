@@ -1,5 +1,49 @@
 {{>layouts/header}}
 <div class="container mt-5 d-flex justify-content-center">
-<h2>login</h2>
+    <div class="card shadow-sm" style="width: 30rem;">
+        <div class="card-body">
+            <h4 class="card-title text-center mb-4">로그인</h4>
+            <form action="/members/login" method="post">
+
+
+
+
+                {{#error}}
+                    <div class="alert alert-danger" role="alert">
+                        {{error}}
+                    </div>
+                {{/error}}
+
+
+
+
+                <div class="mb-3">
+                    <label for="username" class="form-label"><strong>아이디:</strong></label>
+                    <input type="text" id="username" class="form-control" name="username"  required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label"><strong>비밀번호:</strong></label>
+                    <input type="password" id="password" class="form-control" name="password" required>
+                </div>
+
+
+
+                <!-- 아이디 저장 버튼 -->
+                <div class="form-check">
+                    <input type="checkbox" id="rememberMe" class="form-check-input">
+                    <label for="rememberMe" class="form-check-label">아이디 저장</label>
+                </div>
+
+
+
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">로그인</button>
+                    <a href="/members/all" class="btn btn-secondary">뒤로가기</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {{>layouts/footer}}

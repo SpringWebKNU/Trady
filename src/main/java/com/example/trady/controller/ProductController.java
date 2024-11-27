@@ -47,96 +47,53 @@ public class ProductController {
     @PostMapping("/products/create")
     public String createProduct(ProductForm productForm) {
         log.info("Received ProductForm: {}", productForm);
-
-        if (productForm.getCategoryId() == null) {
-            throw new IllegalArgumentException("Category ID must not be null.");
-        }
-
-        Pcategory pcategory = pcategoryService.findById(productForm.getCategoryId());
-        if (pcategory == null) {
-            throw new IllegalArgumentException("Invalid category ID: " + productForm.getCategoryId());
-        }
-
-        Product product = productForm.toEntity(pcategory);
-        product.logInfo();
-
-        Product saved = productRepository.save(product);
-        saved.logInfo();
-
-        return "redirect:/products/" + saved.getId();
+        Product savedProduct = productService.saveProduct(productForm);
+        return "redirect:/products/" + savedProduct.getId();
     }
-
-
 
 
     @GetMapping("/products/all")
-    public String all(Model model){
-        Iterable<Product> products = productRepository.findAll();
-
-        // Add products to the model
+    public String all(Model model) {
+        List<Product> products = productService.findAllProducts();
         model.addAttribute("products", products);
-
         return "products/all";
     }
+
 
     // 상세 페이지
     // 데이터 조회 요청 접수
     @GetMapping("/products/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
-        log.info("id = {} ", id);
-
-        Product product = productRepository.findById(id).orElse(null);
+        Product product = productService.findProductById(id);
         model.addAttribute("product", product);
-
         return "products/show";
     }
 
 
 
     @GetMapping("/products/{id}/edit")
-    public String edit(@PathVariable("id") Long id, Model model){
-
-        Product productEntity = productRepository.findById(id).orElse(null);
-        model.addAttribute("product", productEntity);
-
+    public String edit(@PathVariable("id") Long id, Model model) {
+        Product product = productService.findProductById(id);
+        model.addAttribute("product", product);
         return "products/edit";
     }
 
     @PostMapping("/products/update")
-    public String update(ProductForm productForm){
-        log.info(productForm.toString());
-
-
-        // Pcategory를 가져오기 위해 서비스 호출
-        Pcategory pcategory = pcategoryService.findById(productForm.getCategoryId());
-        if (pcategory == null) {
-            throw new IllegalArgumentException("Invalid category ID: " + productForm.getCategoryId());
-        }
-
-       Product productEntity = productForm.toEntity(pcategory);
-        log.info(productEntity.toString());
-
-        Product target = productRepository.findById(productEntity.getId()).orElse(null);
-
-        if(target != null){
-            productRepository.save(productEntity);
-        }
-        return "redirect:/products/"+target.getId();
+    public String update(ProductForm productForm) {
+        Product updatedProduct = productService.updateProduct(productForm);
+        return "redirect:/products/" + updatedProduct.getId();
     }
+
+
+
 
     @GetMapping("/products/{id}/delete")
-    public String delete(@PathVariable("id") Long id,
-                         RedirectAttributes rttr){
-        Product target = productRepository.findById(id).orElse(null);
-
-        if(target != null){
-            productRepository.deleteById(id);
-            rttr.addFlashAttribute("msg","삭제되었습니다.");
-        }
-
+    public String delete(@PathVariable("id") Long id, RedirectAttributes rttr) {
+        productService.deleteProduct(id);
+        rttr.addFlashAttribute("msg", "삭제되었습니다.");
         return "redirect:/products/all";
-
     }
+
 
     @GetMapping("/products/search")
     public String search(@RequestParam("keyword") String keyword, Model model) {
@@ -153,30 +110,27 @@ public class ProductController {
         return "products/searchResults";  // 결과를 보여줄 Mustache 템플릿 이름
     }
 
+
     @GetMapping("/products")
     public String listProducts(Model model) {
-        List<Pcategory> categories = pcategoryRepository.findAll();  // Get all categories
-        Map<Long, List<Product>> productsByCategory = new HashMap<>();
+        // 1. 모든 카테고리와 제품을 가져오기 위해 서비스 호출
+        List<Pcategory> categories = productService.findAllCategories();
+        Map<Long, List<Product>> productsByCategory = productService.groupProductsByCategory();
 
-        // For each category, find all products belonging to that category
-        for (Pcategory category : categories) {
-            List<Product> products = productRepository.findByPcategory(category); // Assuming this method exists
-            productsByCategory.put(category.getId(), products);
-        }
-
+        // 2. 첫 번째 카테고리를 활성 상태로 설정
         if (!categories.isEmpty()) {
-            categories.get(0).setFirst(true);  // Set the first category as active
+            categories.get(0).setFirst(true);
         }
 
+        // 3. 모델에 데이터 추가
         log.info("categories: {}", categories);
         log.info("productsByCategory: {}", productsByCategory);
 
         model.addAttribute("categories", categories);
-        model.addAttribute("productsByCategory", productsByCategory);  // Pass the map of products grouped by category
-        return "products/list";  // Return the Mustache template
+        model.addAttribute("productsByCategory", productsByCategory);
+
+        return "products/list";
     }
-
-
 
 
 

@@ -22,4 +22,6 @@ public interface ProductService {
    List<Pcategory> findAllCategories();
    Map<Long, List<Product>> groupProductsByCategory();
 
+
+
 }

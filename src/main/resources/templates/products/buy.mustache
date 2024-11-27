@@ -1,0 +1,19 @@
+{{>layouts/header}}
+<div>
+    <h1>{{product.pname}}</h1>
+    <p>Price: {{product.pprice}}</p>
+
+    <h2>Select Size</h2>
+    <form action="/buying/create" method="post">
+        <input type="hidden" name="productId" value="{{product.id}}">
+        <div>
+            {{#productOptions}}
+                <button type="submit" name="productOptionId" value="{{id}}">
+                    {{size}}
+                </button>
+            {{/productOptions}}
+        </div>
+    </form>
+</div>
+
+{{>layouts/footer}}

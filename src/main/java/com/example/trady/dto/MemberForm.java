@@ -14,12 +14,14 @@ public class MemberForm {
     private String username;
     private String password;
     private String email;
+    private String phonenumber;
+    private String addr;
 
     public Member toEntity() {
-        return new Member(userid, username, password, email);
+        return new Member(userid, username, password, email, phonenumber, addr);
     }
 
     public void logInfo() {
-        log.info("userid: {}, username: {}, password: {}, email: {}", userid, username, password, email);
+        log.info("userid: {}, username: {}, password: {}, email: {}, phonenumber: {}, addr: {}", userid, username, password, email, phonenumber, addr);
     }
 }

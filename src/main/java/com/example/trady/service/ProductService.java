@@ -1,9 +1,8 @@
-package com.example.trady.Service;
+package com.example.trady.service;
 
 import com.example.trady.dto.ProductForm;
 import com.example.trady.entity.Pcategory;
 import com.example.trady.entity.Product;
-import com.example.trady.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

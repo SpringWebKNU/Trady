@@ -1,4 +1,4 @@
-package com.example.trady.Service;
+package com.example.trady.service;
 
 import com.example.trady.entity.Pcategory;
 

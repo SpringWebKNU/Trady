@@ -1,8 +1,7 @@
 package com.example.trady.controller;
 
-import com.example.trady.Service.PcategoryService;
-import com.example.trady.Service.PcategoryServiceImpl;
-import com.example.trady.Service.ProductService;
+import com.example.trady.service.PcategoryService;
+import com.example.trady.service.ProductService;
 import com.example.trady.dto.ProductForm;
 import com.example.trady.entity.Pcategory;
 import com.example.trady.entity.Product;
@@ -10,7 +9,6 @@ import com.example.trady.repository.PcategoryRepository;
 import com.example.trady.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +32,7 @@ public class ProductController {
 
     @Autowired
     PcategoryService pcategoryService;
+
     @Autowired
     private PcategoryRepository pcategoryRepository;
 
@@ -100,7 +98,7 @@ public class ProductController {
         log.info("Searching for products with keyword: {}", keyword);
 
         // ProductService를 통해 검색 결과 가져오기
-       List<Product> products = productService.search(keyword);
+        List<Product> products = productService.search(keyword);
 
         // 모델에 결과를 추가
         model.addAttribute("products", products);

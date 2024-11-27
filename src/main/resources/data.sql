@@ -22,4 +22,3 @@ VALUES
     ('Product4', '400000', 'shoes4.jpg', 1),
     ('Product5', '500000', 'shoes5.jpg', 2);
 
-

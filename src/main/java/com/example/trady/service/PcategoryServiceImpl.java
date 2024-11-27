@@ -1,8 +1,7 @@
-package com.example.trady.Service;
+package com.example.trady.service;
 
 import com.example.trady.entity.Pcategory;
 import com.example.trady.repository.PcategoryRepository;
-import com.example.trady.Service.PcategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,8 +1,7 @@
 package com.example.trady.controller;
 
-import com.example.trady.Service.PcategoryService;
-import com.example.trady.Service.PcategoryServiceImpl;
-import com.example.trady.Service.ProductService;
+import com.example.trady.service.PcategoryService;
+import com.example.trady.service.ProductService;
 import com.example.trady.dto.ProductForm;
 import com.example.trady.entity.Pcategory;
 import com.example.trady.entity.Product;
@@ -10,7 +9,6 @@ import com.example.trady.repository.PcategoryRepository;
 import com.example.trady.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -21,12 +21,12 @@
 
             <div class="col-md-6">
                 <!-- Action Buttons (상세, 수정, 삭제) on top-right, inline) -->
+            {{#isAdmin}}
                 <div class="d-flex justify-content-end mb-3">
-                    <a href="/products/{{id}}" class="btn btn-info btn-sm me-2">상세보기</a>
                     <a href="/products/{{id}}/edit" class="btn btn-warning btn-sm me-2">수정하기</a>
                     <a href="/products/{{id}}/delete" class="btn btn-danger btn-sm">삭제하기</a>
                 </div>
-
+            {{/isAdmin}}
                 <!-- Product Details (오른쪽 배치, 버튼들 포함) -->
                 <div class="card shadow-sm">
                     <div class="card-body">

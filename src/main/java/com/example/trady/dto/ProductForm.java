@@ -18,11 +18,12 @@ public class ProductForm {
     private String pprice;
     private String pimg;
     private Long categoryId; // categoryId is just a reference to a Pcategory
+    private String pdate;
+
 
     // DTO -> Entity 변환
-    // You need to pass the actual Pcategory entity when converting to Product
     public Product toEntity(Pcategory pcategory) {
-        return new Product(id, pname, pprice, pimg, pcategory);  // Pcategory도 함께 전달
+        return new Product(id, pname, pprice, pimg, pcategory, pdate);  // Pcategory도 함께 전달
     }
 
     public void logInfo() {

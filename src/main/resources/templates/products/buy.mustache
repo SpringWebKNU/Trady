@@ -1,0 +1,53 @@
+{{>layouts/header}}
+
+<!-- 컨테이너 시작 -->
+<div class="container mt-5">
+    <!-- 그리드 시스템 사용하여 가운데 정렬 -->
+    <div class="row justify-content-center">
+        <div class="col-md-6"> <!-- 카드의 가로 크기를 줄임 (8 -> 6) -->
+            <!-- 상품 정보 카드 -->
+            <div class="card shadow-lg border-light rounded">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <img src="../../images/{{product.pimg}}" class="img-fluid shadow-sm" alt="{{product.pname}}" style="height: 300px; object-fit: cover;"> <!-- 이미지 크기 조정 -->
+                    </div>
+
+                    <!-- 상품 제목 -->
+                    <h1 class="text-center text-primary mb-3">{{product.pname}}</h1>
+
+                    <!-- 가격 정보 -->
+                    <p class="text-center text-muted mb-4">
+                        <span class="fs-4 text-success">{{product.pprice}}</span> <!-- 가격 폰트 크기 조정 -->
+                    </p>
+
+                    <!-- 사이즈 선택 -->
+                    <h2 class="mt-4 text-center">Select Size</h2>
+
+                    <!-- 상품 옵션이 존재하는 경우 버튼들 표시 -->
+                    <div class="row">
+                        {{#productOptions}}
+                            <div class="col-md-3 mb-3"> <!-- 버튼을 한 줄에 최대 4개로 배치 -->
+                                <form action="/buying/create" method="post">
+                                    <input type="hidden" name="productId" value="{{product.id}}">
+
+                                    <!-- 사이즈가 없으면 비활성화된 회색 버튼, 있으면 파란색 버튼 -->
+                                    <button type="submit" name="productOptionId" value="{{id}}" class="btn btn-block btn-lg {{#size}}btn-outline-primary{{/size}} {{^size}}btn-secondary disabled{{/size}}">
+                                        {{size}}
+                                    </button>
+                                </form>
+                            </div>
+                        {{/productOptions}}
+                    </div>
+
+                    <!-- 상품 옵션이 없을 경우 메시지 표시 -->
+                    {{^productOptions}}
+                        <p class="text-center text-danger">현재 판매중인 사이즈가 없습니다.</p>
+                    {{/productOptions}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 컨테이너 끝 -->
+
+{{>layouts/footer}}

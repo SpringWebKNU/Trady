@@ -2,32 +2,73 @@
 
 <div class="container mt-4">
     <div class="row">
-        {{#loggedInUser}}
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">{{loggedInUser.username}}</h5>
-                        <p class="card-text text-muted">이메일: {{loggedInUser.email}}</p>
-                        <p class="card-text text-muted">전화번호: {{loggedInUser.phone}}</p>
-                        <p class="card-text text-muted">주소: {{loggedInUser.address}}</p>
+        {{#isLoggedIn}}
+            <div class="d-flex justify-content-center">
+                <div class="col-md-4 mb-4">
+                    <!-- User Card -->
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{currentUser.username}}</h5>
+                            <p class="card-text text-muted">아이디: {{currentUser.username}}</p>
+                            <p class="card-text text-muted">이메일: {{currentUser.email}}</p>
+                            <p class="card-text text-muted">전화번호: {{currentUser.phonenumber}}</p>
+                            <p class="card-text text-muted">주소: {{currentUser.addr}}</p>
+                            <div class="d-flex justify-content-between">
+                                <a href="/members/{{currentUser.userid}}/edit" class="btn btn-success btn-sm">정보 수정</a>
+                                <a href="/members/{{currentUser.userid}}/delete" class="btn btn-danger btn-sm" onclick="return confirm('정말 삭제하시겠습니까?');">삭제하기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                        <div class="d-flex justify-content-between">
-                            <a href="/members/{{loggedInUser.userid}}/edit" class="btn btn-success btn-sm">수정하기</a>
-                            <a href="/members/{{loggedInUser.userid}}/delete" class="btn btn-danger btn-sm">삭제하기</a>
+                <div class="col-md-4 mb-4">
+                    <!-- Product Management Card -->
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">상품 관리</h5>
+                            <p class="card-text text-muted">회원님의 상품을 관리하세요.</p>
+                            <div class="d-flex justify-content-center">
+                                <div class="container mt-4">
+                                    <h2 class="mb-4">판매 관리</h2>
+
+                                    {{#sellingList}}
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">상품명: {{sproduct}}</h5>
+                                                <p class="card-text">판매 가격: {{sprice}}원</p>
+                                                <p class="card-text">옵션: {{size}}</p>
+
+
+                                                <div class="d-flex justify-content-between mt-2">
+                                                    <a href="/products/{{id}}/edit" class="btn btn-success btn-sm">수정하기</a>
+                                                    <a href="/products/{{id}}/delete" class="btn btn-danger btn-sm" onclick="return confirm('정말 삭제하시겠습니까?');">삭제하기</a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    {{/sellingList}}
+
+                                    {{^sellingList}}
+                                        <div class="alert alert-warning" role="alert">
+                                            현재 판매 중인 상품이 없습니다.
+                                        </div>
+                                    {{/sellingList}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {{/loggedInUser}}
+        {{/isLoggedIn}}
 
-        {{^loggedInUser}}
+        {{^isLoggedIn}}
             <div class="col-md-12">
                 <div class="alert alert-warning" role="alert">
                     로그인 후에 마이페이지를 이용하실 수 있습니다.
                     <a href="/members/login" class="alert-link">로그인 페이지로 이동</a>
                 </div>
             </div>
-        {{/loggedInUser}}
+        {{/isLoggedIn}}
     </div>
 </div>
 

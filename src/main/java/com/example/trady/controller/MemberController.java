@@ -2,50 +2,77 @@ package com.example.trady.controller;
 
 import com.example.trady.dto.MemberForm;
 import com.example.trady.entity.Member;
+import com.example.trady.entity.Selling;
 import com.example.trady.service.MemberService;
+import com.example.trady.service.SellingService;
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Generated;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Slf4j
+import java.util.List;
+
 @Controller
 public class MemberController {
-
+    @Generated
+    private static final Logger log = LoggerFactory.getLogger(MemberController.class);
     @Autowired
     private MemberService memberService;
 
-    @GetMapping("/")
+    @Autowired
+    private SellingService sellingService;
+
+
+    public MemberController() {
+    }
+
+    @GetMapping({"/"})
     public String home(HttpSession session, Model model) {
-        Boolean loggedInUser = (Boolean) session.getAttribute("loggedInUser");
-        loggedInUser = loggedInUser != null && loggedInUser;
-        Member currentUser = (Member) session.getAttribute("currentUser");
-
-        model.addAttribute("loggedInUser", loggedInUser);
+        Member currentUser = (Member)session.getAttribute("currentUser");
+        boolean isLoggedIn = currentUser != null;
+        model.addAttribute("isLoggedIn", isLoggedIn);
         model.addAttribute("currentUser", currentUser);
-
         return "index";
     }
 
-    @GetMapping("/members/login")
+    @GetMapping({"/members/admin"})
+    public String adminPage(HttpSession session, Model model) {
+        if (this.isAdmin(session)) {
+            Iterable<Member> allMembers = this.memberService.getAllUsers();
+            model.addAttribute("members", allMembers);
+            return "members/admin";
+        } else {
+            return "redirect:/";
+        }
+    }
+
+    @GetMapping({"/members/all"})
+    public String showAllMembers(HttpSession session, Model model) {
+        if (this.isAdmin(session)) {
+            Iterable<Member> allMembers = this.memberService.getAllUsers();
+            model.addAttribute("members", allMembers);
+            return "members/admin";
+        } else {
+            return "redirect:/";
+        }
+    }
+
+    @GetMapping({"/members/login"})
     public String memberLoginForm() {
         return "members/login";
     }
 
-    @PostMapping("/members/login")
-    public String login(
-            @RequestParam("username") String username,
-            @RequestParam("password") String password,
-            HttpSession session,
-            Model model,
-            RedirectAttributes redirectAttributes
-    ) {
-        boolean success = memberService.login(username, password, session);
-
-        if (success) {
+    @PostMapping({"/members/login"})
+    public String login(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        if (this.memberService.login(username, password, session)) {
             redirectAttributes.addFlashAttribute("msg", "로그인 성공!");
             return "redirect:/products/all";
         } else {
@@ -54,55 +81,100 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/members/logout")
-    public String logout(HttpSession session) {
-        memberService.logout(session);
-        return "redirect:/";
+    @PostMapping({"/members/logout"})
+    public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
+        this.memberService.logout(session);
+        redirectAttributes.addFlashAttribute("msg", "로그아웃 성공!");
+        return "redirect:/products/all";
     }
 
-    @GetMapping("/members/join")
+    @GetMapping({"/members/join"})
     public String newMemberJoinForm() {
         return "members/join";
     }
 
-    @PostMapping("/members/create")
+    @PostMapping({"/members/create"})
     public String createUser(MemberForm memberForm, Model model) {
-        Member saved = memberService.createUser(memberForm);
+        Member saved = this.memberService.createUser(memberForm);
         model.addAttribute("username", saved.getUsername());
         return "members/welcome";
     }
 
-    @GetMapping("/members/mypage")
-    public String allUsers(Model model) {
-        Iterable<Member> members = memberService.getAllUsers();
-        model.addAttribute("members", members);
+    @GetMapping({"/members/mypage"})
+    public String myPage(HttpSession session, Model model) {
+        Member currentUser = (Member)session.getAttribute("currentUser");
+        boolean isLoggedIn = currentUser != null;
+
+        if (isLoggedIn) {
+            model.addAttribute("currentUserModel", currentUser);
+        }
+
+        List<Selling> sellingList = sellingService.findAllByUser(currentUser);
+
+        model.addAttribute("isLoggedIn", isLoggedIn);
+        model.addAttribute("currentUserModel", currentUser);
+        model.addAttribute("sellingList", sellingList);
+
         return "members/mypage";
     }
 
-    @GetMapping("/members/{userid}")
+    @GetMapping({"/members/{userid}"})
     public String showUser(@PathVariable("userid") Long userid, Model model) {
-        Member member = memberService.getUserById(userid);
+        Member member = this.memberService.getUserById(userid);
         model.addAttribute("member", member);
         return "members/show";
     }
 
-    @GetMapping("/members/{userid}/edit")
+    @GetMapping({"/members/{userid}/edit"})
     public String editUser(@PathVariable("userid") Long userid, Model model) {
-        Member member = memberService.getUserById(userid);
+        Member member = this.memberService.getUserById(userid);
         model.addAttribute("member", member);
         return "members/edit";
     }
 
-    @PostMapping("/members/update")
-    public String updateUser(MemberForm memberForm) {
-        boolean success = memberService.updateUser(memberForm);
-        return success ? "redirect:/members/" + memberForm.getUserid() : "redirect:/members/mypage";
+    @GetMapping({"/members/{userid}/delete"})
+    public String deleteUser(@PathVariable("userid") Long userid, HttpSession session, RedirectAttributes rttr) {
+        Member currentUser = (Member)session.getAttribute("currentUser");
+        Boolean isAdmin = (Boolean)session.getAttribute("isAdmin");
+        if (currentUser != null && currentUser.getUserid().equals(userid)) {
+            return this.handleUserDeletion(userid, session, rttr);
+        } else if (Boolean.TRUE.equals(isAdmin)) {
+            return this.handleUserDeletion(userid, session, rttr);
+        } else {
+            rttr.addFlashAttribute("msg", "권한이 없습니다.");
+            return "redirect:/members/admin";
+        }
     }
 
-    @GetMapping("/members/{userid}/delete")
-    public String deleteUser(@PathVariable("userid") Long userid, RedirectAttributes rttr) {
-        boolean success = memberService.deleteUser(userid);
-        rttr.addFlashAttribute("msg", success ? "삭제되었습니다." : "삭제에 실패했습니다.");
-        return "redirect:/members/all";
+    private String handleUserDeletion(Long userid, HttpSession session, RedirectAttributes rttr) {
+        boolean success = this.memberService.deleteUser(userid);
+
+        if (success) {
+            Member currentUser = (Member) session.getAttribute("currentUser");
+            if (currentUser != null && currentUser.getUserid().equals(userid)) {
+                // 현재 로그인한 유저와 삭제 대상 유저가 같으면 세션 종료
+                session.invalidate();
+                rttr.addFlashAttribute("msg", "계정이 삭제되었습니다. 로그아웃되었습니다.");
+                return "redirect:/products/all";
+            } else {
+                // 관리자가 삭제한 경우
+                rttr.addFlashAttribute("msg", "유저 계정이 삭제되었습니다.");
+                return "redirect:/members/admin";
+            }
+        } else {
+            rttr.addFlashAttribute("msg", "계정 삭제에 실패했습니다.");
+            return "redirect:/members/admin";
+        }
+    }
+
+    private boolean isAdmin(HttpSession session) {
+        Boolean isAdmin = (Boolean)session.getAttribute("isAdmin");
+        return Boolean.TRUE.equals(isAdmin);
+    }
+
+    @PostMapping({"/members/update"})
+    public String updateUser(MemberForm memberForm) {
+        boolean success = this.memberService.updateUser(memberForm);
+        return success ? "redirect:/members/" + memberForm.getUserid() : "redirect:/members/mypage";
     }
 }

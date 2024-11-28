@@ -18,4 +18,6 @@ public interface MemberService {
     boolean updateUser(MemberForm memberForm);
 
     boolean deleteUser(Long userid);
+
+    Member findByUsername(String username);
 }

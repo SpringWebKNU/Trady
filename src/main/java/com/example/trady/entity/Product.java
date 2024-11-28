@@ -23,6 +23,10 @@ public class Product {
     private Pcategory pcategory;
 
 
+    @Column(nullable = false, columnDefinition = "DATE")
+    String pdate;
+
+
     public String getPcategoryName() {
         return pcategory != null ? pcategory.getPname() : "카테고리 없음";
     }
@@ -31,15 +35,14 @@ public class Product {
         return this.pcategory != null && this.pcategory.getId().equals(categoryId);
     }
 
-
-
     // Constructor
-    public Product(Long id, String pname, String pprice, String pimg, Pcategory pcategory) {
+    public Product(Long id, String pname, String pprice, String pimg, Pcategory pcategory, String pdate) {
         this.id = id;
         this.pname = pname;
         this.pprice = pprice;
         this.pimg = pimg;
         this.pcategory = pcategory;
+        this.pdate = pdate;
     }
 
     public Long getId() {
@@ -58,8 +61,13 @@ public class Product {
         return pimg;
     }
 
+    public String getPdate() {
+        return pdate;
+    }
 
-
+    public Pcategory getPcategory() {
+        return pcategory;
+    }
     public void setId(Long id) {
         this.id = id;
     }
@@ -77,12 +85,12 @@ public class Product {
     }
 
 
-    public Pcategory getPcategory() {
-        return pcategory;
-    }
-
     public void setPcategory(Pcategory pcategory) {
         this.pcategory = pcategory;
+    }
+
+    public void setPdate(String pdate) {
+        this.pdate = pdate;
     }
 
     public void logInfo(){

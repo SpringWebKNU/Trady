@@ -12,19 +12,24 @@
                         <h5 class="card-title">{{pname}}</h5>
                         <p class="card-text text-muted">{{pcategoryName}}</p> <!-- 카테고리 이름 출력 -->
                         <p class="card-text text-muted">{{pprice}} 원</p>
-                        <div class="d-flex justify-content-between">
-                            <a href="/products/{{id}}/delete" class="btn btn-primary btn-sm">삭제하기</a>
-                            <a href="/products/{{id}}/edit" class="btn btn-success btn-sm">수정하기</a>
-                        </div>
+                        {{#isAdmin}}
+                            <div class="d-flex justify-content-between">
+                                <a href="/products/{{id}}/delete" class="btn btn-primary btn-sm">삭제하기</a>
+                                <a href="/products/{{id}}/edit" class="btn btn-success btn-sm">수정하기</a>
+                            </div>
+                        {{/isAdmin}}
                     </div>
                 </div>
             </div>
         {{/products}}
     </div>
 
+{{#isAdmin}}
     <!-- Add Product Button -->
     <div class="text-end mt-3">
         <a href="/products/new" class="btn btn-success">상품 등록하기</a>
     </div>
+{{/isAdmin}}
+
 </div>
 {{>layouts/footer}}

@@ -1,6 +1,8 @@
 package com.example.trady.controller;
 
+import com.example.trady.entity.ProductOption;
 import com.example.trady.service.PcategoryService;
+import com.example.trady.service.ProductOptionService;
 import com.example.trady.service.ProductService;
 import com.example.trady.dto.ProductForm;
 import com.example.trady.entity.Pcategory;
@@ -11,12 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +33,16 @@ public class ProductController {
     @Autowired
     PcategoryService pcategoryService;
 
+    ProductOptionService productOptionService;
+
+    @Autowired
+    public ProductController(ProductOptionService productOptionService) {
+        this.productOptionService = productOptionService;
+    }
+
     @Autowired
     private PcategoryRepository pcategoryRepository;
+
 
 
     @GetMapping("/products/new")
@@ -87,6 +95,7 @@ public class ProductController {
 
     @GetMapping("/products/{id}/delete")
     public String delete(@PathVariable("id") Long id, RedirectAttributes rttr) {
+        productOptionService.deleteByProductId(id);
         productService.deleteProduct(id);
         rttr.addFlashAttribute("msg", "삭제되었습니다.");
         return "redirect:/products/all";
@@ -130,6 +139,17 @@ public class ProductController {
         return "products/list";
     }
 
+    @RequestMapping("/products/{productId}/buy")
+    public String showProductPage(@PathVariable("productId") Long productId, Model model) {
+        // 'product'를 모델에 추가
+        Product product = productService.findProductById(productId);
+        model.addAttribute("product", product); // 템플릿에 'product'를 전달
 
+        // 'productOptions'도 모델에 추가
+        List<ProductOption> productOptions = productOptionService.findByProductId(productId);
+        model.addAttribute("productOptions", productOptions);
+
+        return "products/buy";
+    }
 
 }

@@ -24,10 +24,10 @@ public class Selling {
     private Product sproduct;  // 판매 상품
 
     private String size;
-    private int sprice;
+    private long sprice;
 
     // 생성자 수정 (user 추가)
-    public Selling(Member user, Product sproduct, String size, int sprice) {
+    public Selling(Member user, Product sproduct, String size, long sprice) {
         this.user = user;
         this.sproduct = sproduct;
         this.size = size;
@@ -59,11 +59,11 @@ public class Selling {
         this.size = size;
     }
 
-    public int getSprice() {
+    public long getSprice() {
         return sprice;
     }
 
-    public void setSprice(int sprice) {
+    public void setSprice(long sprice) {
         this.sprice = sprice;
     }
 

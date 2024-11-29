@@ -39,6 +39,10 @@ public class Pcategory {
     @ToString.Exclude
     private List<Product> products;
 
+
+    // 선택 여부를 나타내는 필드
+    private boolean isSelected;  // 카테고리가 선택되었는지 여부
+
     // Constructor
     public Pcategory(Long id, String pname) {
         this.id = id;
@@ -71,5 +75,13 @@ public class Pcategory {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

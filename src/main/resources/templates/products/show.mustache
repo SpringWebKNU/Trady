@@ -15,7 +15,7 @@
             <div class="col-md-6">
                 <!-- Product Image (왼쪽 배치) -->
                 <div class="mb-4">
-                    <img src="../images/{{pimg}}" class="img-fluid shadow-sm" alt="{{pname}}" style="height: 400px; object-fit: cover;">
+                    <img src="/images/uploads/{{pimg}}" class="img-fluid shadow-sm" alt="{{pname}}" style="height: 400px; object-fit: cover;">
                 </div>
             </div>
 
@@ -37,13 +37,15 @@
                         <p class="card-text text-muted d-inline-block me-3">{{pcategoryName}}</p>
 
                         <!-- Product Price (가격 크게) -->
-                        <p class="card-text text-success fs-4">{{pprice}} 원</p>
+                        <p class="card-text text-success fs-4">{{formattedPrice}}  원</p>
 
                         <!-- 판매하기와 구매하기 버튼도 오른쪽 정렬 -->
+                         {{^isAdmin}}
                         <div class="d-flex justify-content-end mt-3">
                             <a href="/products/{{id}}/sell" class="btn btn-primary btn-lg">판매</a>
                             <a href="/products/{{id}}/buy" class="btn btn-success btn-lg ms-3">구매</a>
                         </div>
+                         {{/isAdmin}}
                     </div>
                 </div>
             </div>

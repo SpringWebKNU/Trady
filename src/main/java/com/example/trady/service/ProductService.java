@@ -4,6 +4,7 @@ import com.example.trady.dto.ProductForm;
 import com.example.trady.entity.Pcategory;
 import com.example.trady.entity.Product;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,6 @@ public interface ProductService {
    List<Pcategory> findAllCategories();
    Map<Long, List<Product>> groupProductsByCategory();
 
-
+   String saveFile(MultipartFile file);
 
 }

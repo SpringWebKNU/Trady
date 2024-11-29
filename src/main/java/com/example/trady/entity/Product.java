@@ -7,6 +7,9 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+
 @Entity @ToString @Slf4j @NoArgsConstructor
 public class Product {
 
@@ -14,7 +17,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     private String pname;
-    private String pprice;
+    private long pprice;
+    private String formattedPrice;  // 포맷된 가격을 저장할 필드
+
     private String pimg;
 
     // Category와 연관 관계 설정
@@ -23,8 +28,8 @@ public class Product {
     private Pcategory pcategory;
 
 
-    @Column(nullable = false, columnDefinition = "DATE")
-    String pdate;
+    @Column(nullable = false)
+    private LocalDateTime pdate; // 변경된 필드 타입
 
 
     public String getPcategoryName() {
@@ -35,11 +40,11 @@ public class Product {
         return this.pcategory != null && this.pcategory.getId().equals(categoryId);
     }
 
-    // Constructor
-    public Product(Long id, String pname, String pprice, String pimg, Pcategory pcategory, String pdate) {
+    public Product(Long id, String pname, long pprice, String formattedPrice, String pimg, Pcategory pcategory, LocalDateTime pdate) {
         this.id = id;
         this.pname = pname;
         this.pprice = pprice;
+        this.formattedPrice = formattedPrice;
         this.pimg = pimg;
         this.pcategory = pcategory;
         this.pdate = pdate;
@@ -53,16 +58,9 @@ public class Product {
         return pname;
     }
 
-    public String getPprice() {
-        return pprice;
-    }
 
     public String getPimg() {
         return pimg;
-    }
-
-    public String getPdate() {
-        return pdate;
     }
 
     public Pcategory getPcategory() {
@@ -76,9 +74,6 @@ public class Product {
         this.pname = pname;
     }
 
-    public void setPprice(String pprice) {
-        this.pprice = pprice;
-    }
 
     public void setPimg(String pimg) {
         this.pimg = pimg;
@@ -89,12 +84,39 @@ public class Product {
         this.pcategory = pcategory;
     }
 
-    public void setPdate(String pdate) {
+    public LocalDateTime getPdate() {
+        return pdate;
+    }
+
+    public void setPdate(LocalDateTime pdate) {
         this.pdate = pdate;
+    }
+
+    public long getPprice() {
+        return pprice;
+    }
+
+    public void setPprice(long pprice) {
+        this.pprice = pprice;
+    }
+
+
+    public String getFormattedPrice() {
+        if (formattedPrice == null) {
+            DecimalFormat formatter = new DecimalFormat("#,###");
+            formattedPrice = formatter.format(this.pprice);
+        }
+        return formattedPrice;
+    }
+
+    public void setFormattedPrice(String formattedPrice) {
+        this.formattedPrice = formattedPrice;
     }
 
     public void logInfo(){
         log.info("id: {}, pname: {}, pprice: {}, pimg: {}", id, pname, pprice, pimg);
     }
+
+
 
 }

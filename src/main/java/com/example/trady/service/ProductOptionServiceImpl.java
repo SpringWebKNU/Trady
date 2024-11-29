@@ -41,7 +41,7 @@ public class ProductOptionServiceImpl implements ProductOptionService{
     }
 
     @Override
-    public void createProductOption(Product product, String size, int price) {
+    public void createProductOption(Product product, String size, long price) {
         // ProductOption 생성 후 저장
         ProductOption productOption = new ProductOption();
         productOption.setProduct(product);  // 상품 설정

@@ -9,12 +9,21 @@ VALUES
 
 
 -- Pcategory 테이블에 데이터 삽입
-INSERT INTO pcategory (id, pname, is_first) VALUES
-                                                (1, '나이키', TRUE),
-                                                (2, '아디다스', FALSE),
-                                                (3, '아식스', FALSE),
-                                                (4, '뉴발', FALSE),
-                                                (5, '기타', FALSE);
+-- INSERT INTO pcategory (id, pname, is_first) VALUES
+--                                                 (1, '나이키', TRUE),
+--                                                 (2, '아디다스', FALSE),
+--                                                 (3, '아식스', FALSE),
+--                                                 (4, '뉴발란스', FALSE),
+--                                                 (5, '기타', FALSE);
+
+INSERT INTO pcategory (id, pname, is_first, is_selected)
+VALUES
+    (1, '나이키', TRUE, TRUE),
+    (2, '아디다스', FALSE, FALSE),
+    (3, '아식스', FALSE, FALSE),
+    (4, '뉴발란스', FALSE, FALSE),
+    (5, '기타', FALSE, FALSE);
+
 
 -- Product 테이블에 데이터 삽입 (categoryId 외래 키 참조)
 INSERT INTO product (pname, pprice, pimg, pcategory_id, pdate)

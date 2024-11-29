@@ -1,32 +1,48 @@
 {{>layouts/header}}
 {{#product}}
-    <form class="container" action="/products/update" method="post">
-        <input type="hidden" name="id" value={{id}}>
+    <form class="container my-5 p-4 border rounded shadow-sm" action="/products/update" method="post" enctype="multipart/form-data">
+        <h2 class="mb-4 text-center text-primary">상품 정보 편집</h2>
+        <input type="hidden" name="id" value="{{id}}">
+        <!-- 상품명 -->
         <div class="mb-3">
-            <label class="form-label">상품명</label>
-            <input class="form-control" name="pname" value={{pname}}>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">가격</label>
-            <textarea class="form-control" name="pprice">{{pprice}}</textarea>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">이미지</label>
-            <input class="form-control" name="pimg" value={{pimg}}>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">카테고리</label>
-            <select class="form-control" name="categoryId" required>
-                <option value="">카테고리 선택</option>
-                <option value="1">카테고리 1</option>
-                <option value="2">카테고리 2</option>
-                <option value="3">카테고리 3</option>
-                <!-- 실제 카테고리 목록을 서버에서 동적으로 추가 -->
-            </select>
+            <label class="form-label fw-bold">상품명</label>
+            <input type="text" class="form-control" name="pname" value="{{pname}}" placeholder="상품명을 입력하세요" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="/products/{{id}}">Back</a>
+
+        <!-- 가격 -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">가격</label>
+            <input type="number" class="form-control" name="pprice" max="1000000" value="{{pprice}}" placeholder="가격을 입력하세요" required>
+        </div>
+
+        <!-- 이미지 -->
+        <div class="mb-3">
+
+            <label class="form-label fw-bold">이미지</label>
+            <input type="file" class="form-control" name="pimg" accept="image/*" >
+            <small class="form-text text-muted">이미지 파일을 선택하세요 (기존 값: <code>{{pimg}}</code>)</small>
+        </div>
+
+        <!-- 카테고리 -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">카테고리</label>
+            <select class="form-select" name="categoryId" required>
+                <option value="" disabled {{^categoryId}}selected{{/categoryId}}>카테고리 선택</option>
+                <option value="1" {{#isCategory1}}selected{{/isCategory1}}>나이키</option>
+                <option value="2" {{#isCategory2}}selected{{/isCategory2}}>아디다스</option>
+                <option value="3" {{#isCategory3}}selected{{/isCategory3}}>아식스</option>
+                <option value="4" {{#isCategory4}}selected{{/isCategory4}}>뉴발란스</option>
+                <option value="5" {{#isCategory5}}selected{{/isCategory5}}>기타</option>
+            </select>
+
+
+        </div>
+        <!-- 버튼 -->
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary px-4">저장</button>
+            <a href="/products/{{id}}" class="btn btn-secondary px-4">취소</a>
+        </div>
     </form>
 {{/product}}
 {{>layouts/footer}}

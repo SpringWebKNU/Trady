@@ -20,7 +20,7 @@ public class ProductOption {
     private Product product;  // 상품 정보
 
     private String size;  // 사이즈 정보
-    private int price;  // 가격 (사용자가 판매할 때 입력한 가격)
+    private long price;  // 가격 (사용자가 판매할 때 입력한 가격)
 
     // Constructor for easy initialization
     public ProductOption(Product product, String size, int price) {
@@ -54,11 +54,11 @@ public class ProductOption {
         this.size = size;
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 }

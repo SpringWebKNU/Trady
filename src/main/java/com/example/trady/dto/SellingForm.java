@@ -18,9 +18,9 @@ public class SellingForm {
     Member member;  // Added reference to Member
     Product sproduct;  // 상품
     String size;
-    int sprice;
+    long sprice;
 
-    public SellingForm(Long id, Member member, Product sproduct, String size, int sprice) {
+    public SellingForm(Long id, Member member, Product sproduct, String size, long sprice) {
         this.id = id;
         this.member = member;  // Pass member here
         this.sproduct = sproduct;
@@ -64,11 +64,11 @@ public class SellingForm {
         this.member = member;
     }
 
-    public int getSprice() {
+    public long getSprice() {
         return sprice;
     }
 
-    public void setSprice(int sprice) {
+    public void setSprice(long sprice) {
         this.sprice = sprice;
     }
 }

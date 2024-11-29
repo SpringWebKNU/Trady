@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +62,7 @@ public class ProductController {
     @GetMapping("/products/all")
     public String all(Model model) {
         List<Product> products = productService.findAllProducts();
+
         model.addAttribute("products", products);
         return "products/all";
     }
@@ -71,18 +73,53 @@ public class ProductController {
     @GetMapping("/products/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         Product product = productService.findProductById(id);
+
+        // 가격 포맷팅
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formattedPrice = formatter.format(product.getPprice());  // 가격 포맷팅
+
         model.addAttribute("product", product);
+        model.addAttribute("formattedPrice", formattedPrice); // 포맷된 가격 추가
         return "products/show";
     }
-
 
 
     @GetMapping("/products/{id}/edit")
     public String edit(@PathVariable("id") Long id, Model model) {
         Product product = productService.findProductById(id);
+        List<Pcategory> categories = productService.findAllCategories();
+
+        // 카테고리 선택 여부를 설정
+        categories.forEach(category -> {
+            if (category.getId().equals(product.getPcategory().getId())) {
+                // 선택된 카테고리 플래그 설정
+                switch (category.getId().intValue()) {
+                    case 1:
+                        model.addAttribute("isCategory1", true);
+                        break;
+                    case 2:
+                        model.addAttribute("isCategory2", true);
+                        break;
+                    case 3:
+                        model.addAttribute("isCategory3", true);
+                        break;
+                    case 4:
+                        model.addAttribute("isCategory4", true);
+                        break;
+                    case 5:
+                        model.addAttribute("isCategory5", true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
         model.addAttribute("product", product);
+        model.addAttribute("categories", categories);
         return "products/edit";
     }
+
 
     @PostMapping("/products/update")
     public String update(ProductForm productForm) {

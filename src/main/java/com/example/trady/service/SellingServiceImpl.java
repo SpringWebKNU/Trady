@@ -33,7 +33,7 @@ public class SellingServiceImpl implements SellingService {
     }
 
     @Override
-    public Selling createSelling(Selling selling, Product product, String size, int price) {
+    public Selling createSelling(Selling selling, Product product, String size, long price) {
         // 1. 판매 정보를 저장
         Selling savedSelling = sellingRepository.save(selling);
 

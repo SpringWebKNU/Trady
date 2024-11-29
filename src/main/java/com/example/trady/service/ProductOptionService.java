@@ -16,7 +16,7 @@ public interface ProductOptionService {
 
     void deleteByProductId(Long productId);  // 특정 Product의 모든 옵션 삭제
 
-    void createProductOption(Product product, String size, int price);
+    void createProductOption(Product product, String size, long price);
 
     ProductOption findByProductAndSize(Product product, String size);
 

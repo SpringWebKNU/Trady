@@ -16,7 +16,7 @@ public class ProductOptionForm {
     private Long id;
     private Product product;
     private String size;
-    private int price;
+    private long price;
 
     public ProductOption toEntity() {
         return new ProductOption(id, product, size, price);

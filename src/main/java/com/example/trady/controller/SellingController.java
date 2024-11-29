@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Slf4j
@@ -59,11 +60,11 @@ public class SellingController {
     }
 
     // 상품 판매 폼 처리
-
     @PostMapping("/products/{id}/sell")
     public String sellProduct(@PathVariable("id") Long productId,
                               @ModelAttribute SellingForm sellingForm,
-                              HttpSession session) {
+                              HttpSession session,
+                              Model model) {
 
         // 1. 상품 정보 조회
         Product product = productService.findProductById(productId);
@@ -74,6 +75,19 @@ public class SellingController {
             log.error("로그인된 사용자가 없습니다.");
             return "redirect:/members/login";  // 로그인 페이지로 리다이렉트
         }
+
+        //  판매 가격 검증 (백만원 초과 금지)
+        long price = sellingForm.getSprice();
+        if (price > 1000000) {
+            model.addAttribute("error", "가격은 1,000,000원 이하로 설정해야 합니다.");
+            return "products/sell";  // 판매 등록 페이지로 다시 리턴
+        }
+
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formattedPrice = formatter.format(price); // 포맷팅된 가격
+
+        // 포맷된 가격을 모델에 추가
+        model.addAttribute("formattedPrice", formattedPrice);
 
         // 3. SellingForm 데이터를 이용해 Selling 엔티티 생성
         Selling selling = sellingForm.toEntity();

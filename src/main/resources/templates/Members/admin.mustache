@@ -1,21 +1,7 @@
 {{>layouts/header}}
 <div class="container mt-4">
     <!-- 관리자 모드 타이틀 -->
-    <h2 class="text-center">관리자 모드1시</h2>
-
-    <!-- 탭 네비게이션 -->
-    <ul class="nav nav-tabs" id="adminTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="members-tab" data-bs-toggle="tab" data-bs-target="#members" type="button" role="tab" aria-controls="members" aria-selected="true">회원 목록</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="products-list-tab" data-bs-toggle="tab" data-bs-target="#products-list" type="button" role="tab" aria-controls="products-list" aria-selected="false">상품 목록</button>
-        </li>
-    </ul>
-
-    <!-- 탭 콘텐츠 -->
-    <div class="tab-content mt-3" id="adminTabsContent">
-        <!-- 회원 목록 탭 -->
+    <h2 class="text-center">관리자 모드</h2>
         <div class="tab-pane fade show active" id="members" role="tabpanel" aria-labelledby="members-tab">
             <div class="mt-4">
                 <h3>회원 목록</h3>
@@ -26,47 +12,13 @@
                                 <div class="card-body text-center">
                                     <h5 class="card-title">{{username}}</h5>
                                     <a href="/members/{{userid}}" class="btn btn-primary btn-sm">회원 관리</a>
-                                    <a href="/products/user/{{userid}}" class="btn btn-secondary btn-sm">상품 관리</a> <!-- 상품 관리 버튼 추가 -->
+                                    <a href="/usersell/{{userid}}" class="btn btn-secondary btn-sm">상품 관리</a>
                                 </div>
                             </div>
                         </div>
                     {{/members}}
                 </div>
             </div>
-        </div>
-
-        <!-- 상품 목록 탭 -->
-        <div class="tab-pane fade" id="products-list" role="tabpanel" aria-labelledby="products-list-tab">
-            <h4>상품 목록</h4>
-            <div class="row">
-                {{#products}}
-                    <div class="col-md-4 mb-4">
-                        <!-- Product Card -->
-                        <div class="card shadow-sm h-100">
-                            <a href="/products/{{id}}" class="text-decoration-none">
-                                <img src="../images/{{pimg}}" alt="Product Image" class="card-img-top" style="height: 200px; object-fit: cover;">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">{{pname}}</h5>
-                                <p class="card-text text-muted">{{pcategoryName}}</p>
-                                <p class="card-text text-muted">{{pprice}} 원</p>
-                                {{#isAdmin}}
-                                    <div class="d-flex justify-content-between">
-                                        <a href="/products/{{id}}/delete" class="btn btn-primary btn-sm">삭제하기</a>
-                                        <a href="/products/{{id}}/edit" class="btn btn-success btn-sm">수정하기</a>
-                                    </div>
-                                {{/isAdmin}}
-                            </div>
-                        </div>
-                    </div>
-                {{/products}}
-            </div>
-
-            {{#isAdmin}}
-                <div class="text-end mt-3">
-                    <a href="/products/new" class="btn btn-success">상품 등록하기</a>
-                </div>
-            {{/isAdmin}}
         </div>
     </div>
 </div>

@@ -2,6 +2,10 @@
 <div class="container mt-4">
 
     {{#isAdmin}}
+        <h2 class="text-center">관리자 모드 상품 관리</h2>
+    {{/isAdmin}}
+
+    {{#isAdmin}}
         <!-- Add Product Button -->
         <div class="text-end mt-3">
             <a href="/products/new" class="btn btn-success">상품 등록하기</a>

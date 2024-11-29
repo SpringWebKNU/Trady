@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -125,6 +126,20 @@ public class MemberController {
         return "members/show";
     }
 
+
+    @GetMapping("/usersell/{userid}")
+    public String showUserSellingList(@PathVariable("userid") Long userid, Model model) {
+        Member member = this.memberService.getUserById(userid);
+
+        List<Selling> sellingList = this.sellingService.findAllByUser(member);
+        model.addAttribute("member", member);
+        model.addAttribute("sellingList", sellingList);
+
+        return "members/usersell"; // 적절한 뷰 이름으로 수정
+    }
+
+
+
     @GetMapping({"/members/{userid}/edit"})
     public String editUser(@PathVariable("userid") Long userid, Model model) {
         Member member = this.memberService.getUserById(userid);
@@ -177,4 +192,5 @@ public class MemberController {
         boolean success = this.memberService.updateUser(memberForm);
         return success ? "redirect:/members/" + memberForm.getUserid() : "redirect:/members/mypage";
     }
+
 }

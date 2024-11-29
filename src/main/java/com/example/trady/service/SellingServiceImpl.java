@@ -32,6 +32,17 @@ public class SellingServiceImpl implements SellingService {
         return sellingRepository.save(selling);
     }
 
+
+    @Override
+    public void deleteSelling(Long sellingId) {
+        // 판매 기록 삭제
+        if (sellingRepository.existsById(sellingId)) {
+            sellingRepository.deleteById(sellingId);
+        } else {
+            throw new RuntimeException("해당 판매 기록이 존재하지 않습니다.");
+        }
+    }
+
     @Override
     public Selling createSelling(Selling selling, Product product, String size, long price) {
         // 1. 판매 정보를 저장

@@ -1,0 +1,46 @@
+{{>layouts/header}}
+
+<div class="container mt-4">
+    <div class="card shadow-sm h-100 border-0">
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+                <a href="/members/admin" class="btn btn-secondary">뒤로가기</a>
+                <h5 class="card-title">상품 관리</h5>
+            </div>
+            <p class="card-text text-muted">회원님의 상품을 관리하세요.</p>
+
+            {{#sellingList}}
+                <div class="card mb-3 shadow-sm border-0" style="border-radius: 10px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="../images/{{sproduct.pimg}}" alt="{{sproduct.pname}}" class="img-fluid rounded-start" style="height: 200px; object-fit: cover; border-radius: 10px;">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title" style="font-size: 1.2rem; font-weight: 500;">{{sproduct.pname}}</h5>
+                                <p class="card-text" style="font-size: 1rem;">판매 가격: <strong>{{sprice}}원</strong></p>
+                                <p class="card-text" style="font-size: 0.9rem;">옵션: {{size}}</p>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <form action="/selling/{{id}}/delete" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm" style="font-size: 0.8rem; border-radius: 5px;"
+                                                onclick="return confirm('정말 삭제하시겠습니까?');">
+                                            삭제하기
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/sellingList}}
+
+            {{^sellingList}}
+                <div class="alert alert-warning text-center" role="alert" style="border-radius: 8px; font-size: 0.9rem;">
+                    현재 판매 중인 상품이 없습니다.
+                </div>
+            {{/sellingList}}
+        </div>
+    </div>
+</div>
+
+{{>layouts/footer}}

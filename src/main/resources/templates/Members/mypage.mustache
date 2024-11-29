@@ -1,75 +1,110 @@
 {{>layouts/header}}
 
 <div class="container mt-4">
-    <div class="row">
-        {{#isLoggedIn}}
-            <div class="d-flex justify-content-center">
-                <div class="col-md-4 mb-4">
-                    <!-- User Card -->
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">{{currentUser.username}}</h5>
-                            <p class="card-text text-muted">아이디: {{currentUser.username}}</p>
-                            <p class="card-text text-muted">이메일: {{currentUser.email}}</p>
-                            <p class="card-text text-muted">전화번호: {{currentUser.phonenumber}}</p>
-                            <p class="card-text text-muted">주소: {{currentUser.addr}}</p>
-                            <div class="d-flex justify-content-between">
-                                <a href="/members/{{currentUser.userid}}/edit" class="btn btn-success btn-sm">정보 수정</a>
-                                <a href="/members/{{currentUser.userid}}/delete" class="btn btn-danger btn-sm" onclick="return confirm('정말 삭제하시겠습니까?');">삭제하기</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    {{#isLoggedIn}}
 
-                <div class="col-md-4 mb-4">
-                    <!-- Product Management Card -->
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">상품 관리</h5>
-                            <p class="card-text text-muted">회원님의 상품을 관리하세요.</p>
-                            <div class="d-flex justify-content-center">
-                                <div class="container mt-4">
-                                    <h2 class="mb-4">판매 관리</h2>
+        <!-- 탭 네비게이션 -->
+        <ul class="nav nav-tabs" id="userTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="user-info-tab" data-bs-toggle="tab" data-bs-target="#user-info" type="button" role="tab" aria-controls="user-info" aria-selected="true">회원 정보</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="product-management-tab" data-bs-toggle="tab" data-bs-target="#product-management" type="button" role="tab" aria-controls="product-management" aria-selected="false">상품 관리</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="buying-management-tab" data-bs-toggle="tab" data-bs-target="#buying-management" type="button" role="tab" aria-controls="buying-management" aria-selected="false">구매 관리</button>
+            </li>
+        </ul>
 
-                                    {{#sellingList}}
-                                        <div class="card mb-3">
-                                            <div class="card-body">
-                                                <h5 class="card-title">상품명: {{sproduct}}</h5>
-                                                <p class="card-text">판매 가격: {{sprice}}원</p>
-                                                <p class="card-text">옵션: {{size}}</p>
-
-
-                                                <div class="d-flex justify-content-between mt-2">
-                                                    <a href="/products/{{id}}/edit" class="btn btn-success btn-sm">수정하기</a>
-                                                    <a href="/products/{{id}}/delete" class="btn btn-danger btn-sm" onclick="return confirm('정말 삭제하시겠습니까?');">삭제하기</a>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    {{/sellingList}}
-
-                                    {{^sellingList}}
-                                        <div class="alert alert-warning" role="alert">
-                                            현재 판매 중인 상품이 없습니다.
-                                        </div>
-                                    {{/sellingList}}
+        <!-- 탭 콘텐츠 -->
+        <div class="tab-content mt-3" id="userTabsContent">
+            <!-- 회원 정보 탭 -->
+            <div class="tab-pane fade show active" id="user-info" role="tabpanel" aria-labelledby="user-info-tab">
+                <div class="row justify-content-center">
+                    <div class="col-md-4 mb-4">
+                        <!-- User Card -->
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="card-body text-center">
+                                    <h4 class="card-title mb-4">회원 정보</h4>
+                                    <p><strong>아이디:</strong> {{currentUser.username}}</p>
+                                    <p><strong>이메일:</strong> {{currentUser.email}}</p>
+                                    <p><strong>전화번호:</strong> {{currentUser.phonenumber}}</p>
+                                    <p><strong>주소:</strong> {{currentUser.addr}}</p>
+                                    <div class="d-flex justify-content-between">
+                                        <a href="/members/{{currentUser.userid}}/edit" class="btn btn-success btn-sm">정보 수정</a>
+                                        <a href="/members/{{currentUser.userid}}/delete" class="btn btn-danger btn-sm" onclick="return confirm('정말 삭제하시겠습니까?');">삭제하기</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {{/isLoggedIn}}
 
-        {{^isLoggedIn}}
-            <div class="col-md-12">
-                <div class="alert alert-warning" role="alert">
-                    로그인 후에 마이페이지를 이용하실 수 있습니다.
-                    <a href="/members/login" class="alert-link">로그인 페이지로 이동</a>
+            <!-- 상품 관리 탭 -->
+            <div class="tab-pane fade" id="product-management" role="tabpanel" aria-labelledby="product-management-tab">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">상품 관리</h5>
+                        <p class="card-text text-muted">회원님의 상품을 관리하세요.</p>
+
+                        {{#sellingList}}
+                            <div class="card mb-3 shadow-sm border-0" style="border-radius: 10px;">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="../images/{{sproduct.pimg}}" alt="{{sproduct.pname}}" class="img-fluid rounded-start" style="height: 200px; object-fit: cover; border-radius: 10px;">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title" style="font-size: 1.2rem; font-weight: 500;">{{sproduct.pname}}</h5>
+                                            <p class="card-text" style="font-size: 1rem;">판매 가격: <strong>{{sprice}}원</strong></p>
+                                            <p class="card-text" style="font-size: 0.9rem;">옵션: {{size}}</p>
+                                            <div class="d-flex justify-content-between mt-2">
+                                                <form action="/selling/{{id}}/delete" method="POST" style="display: inline;">
+                                                    <button type="submit" class="btn btn-danger btn-sm" style="font-size: 0.8rem; border-radius: 5px;"
+                                                            onclick="return confirm('정말 삭제하시겠습니까?');">
+                                                        삭제하기
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/sellingList}}
+
+                        {{^sellingList}}
+                            <div class="alert alert-warning" role="alert">
+                                현재 판매 중인 상품이 없습니다.
+                            </div>
+                        {{/sellingList}}
+                    </div>
                 </div>
             </div>
-        {{/isLoggedIn}}
-    </div>
+
+            <!-- 구매 관리 탭 -->
+            <div class="tab-pane fade" id="buying-management" role="tabpanel" aria-labelledby="buying-management-tab">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">구매 내역</h5>
+                        <p class="card-text text-muted">회원님의 구매 내역을 확인하세요.</p>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/isLoggedIn}}
+
+    {{^isLoggedIn}}
+        <div class="col-md-12">
+            <div class="alert alert-warning" role="alert">
+                로그인 후에 마이페이지를 이용하실 수 있습니다.
+                <a href="/members/login" class="alert-link">로그인 페이지로 이동</a>
+            </div>
+        </div>
+    {{/isLoggedIn}}
 </div>
 
 {{>layouts/footer}}

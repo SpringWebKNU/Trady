@@ -105,5 +105,33 @@ public class SellingController {
         return "redirect:/products/" + productId;
     }
 
+    @PostMapping("/selling/{sellingId}/delete")
+    public String deleteSelling(@PathVariable("sellingId") Long sellingId, HttpSession session, Model model) {
+        // 세션에서 사용자 정보 가져오기
+        Member member = (Member) session.getAttribute("currentUser");
+
+        // 관리자 여부 확인 (username이 "admin"인지 검사)
+        boolean isAdmin = member != null && "admin".equals(member.getUsername());
+
+        try {
+            // 판매 정보 삭제
+            sellingService.deleteSelling(sellingId);
+
+            if (isAdmin) {
+                // 관리자인 경우 관리자 페이지로 이동
+                return "redirect:/members/admin";
+            }
+
+            // 일반 사용자: 삭제 성공 메시지 추가
+            model.addAttribute("successMessage", "상품이 삭제되었습니다.");
+        } catch (Exception e) {
+            log.error("상품 삭제 중 오류 발생: {}", e.getMessage());
+            model.addAttribute("error", "삭제 중 오류가 발생했습니다. 다시 시도해 주세요.");
+        }
+
+        // 일반 사용자는 마이페이지로 이동
+        return "redirect:/members/mypage";
+    }
+
 
 }

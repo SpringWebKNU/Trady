@@ -13,4 +13,7 @@ public interface SellingService {
 
     // 사용자별 판매 상품 조회 메서드
     List<Selling> findAllByUser(Member user);
+
+    void deleteSelling(Long sellingId);
+
 }

@@ -48,9 +48,10 @@
                     </div>
                 </div>
 
-                <div class="container mt-4">
+                <!-- 현재 구매가능한 상품 테이블 -->
+                <div class="mt-4">
                     <h4>현재 구매가능한 상품</h4>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th>사이즈</th>
@@ -68,27 +69,28 @@
                     </table>
                 </div>
 
-                <table class="table table-bordered">
+                <!-- 판매완료된 상품 테이블 -->
+                <div class="mt-4">
                     <h4>판매완료된 상품</h4>
-                    <thead>
-                    <tr>
-                        <th>사이즈</th>
-                        <th>가격</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {{#buyings}}
+                    <table class="table table-bordered table-striped">
+                        <thead>
                         <tr>
-                            <td>{{size}}</td>
-                            <td>{{formattedPrice}}원</td>
+                            <th>사이즈</th>
+                            <th>가격</th>
                         </tr>
-                    {{/buyings}}
-                    </tbody>
-                </table>
-
+                        </thead>
+                        <tbody>
+                        {{#buyings}}
+                            <tr>
+                                <td>{{size}}</td>
+                                <td>{{formattedPrice}}원</td>
+                            </tr>
+                        {{/buyings}}
+                        </tbody>
+                    </table>
+                </div>
                 <br>
                 <br>
-
             </div>
         {{/product}}
     </div>

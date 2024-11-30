@@ -1,5 +1,7 @@
 package com.example.trady.controller;
 
+import com.example.trady.email.MailDto;
+import com.example.trady.email.MailService;
 import com.example.trady.entity.Buying;
 import com.example.trady.entity.Member;
 import com.example.trady.entity.Product;
@@ -30,6 +32,8 @@ public class BuyingController {
     private ProductService productService;
     @Autowired
     private ProductOptionService productOptionService;
+    @Autowired
+    private MailService mailService;
 
 
     @GetMapping("/products/{productId}/buy")
@@ -76,6 +80,23 @@ public class BuyingController {
             // 상품 이미지 URL 추가
             model.addAttribute("productImageUrl", buying.getProduct().getPimg());  // 상품 이미지 URL
 
+
+            // 이메일 발송 부분 추가
+            String userEmail = member.getEmail();
+            String productName = buying.getProduct().getPname();
+            String size = buying.getProductOption().getSize();
+            String price = String.valueOf(buying.getProductOption().getPrice());
+            String productImageUrl = buying.getProduct().getPimg();
+
+            // 이메일 발송
+            // 이메일 발송
+            MailDto mailDto = new MailDto();
+            mailDto.setAddress(userEmail);
+            mailDto.setTitle(productName);
+            mailDto.setSize(size);
+            mailDto.setPrice(price);
+
+            mailService.mailSend(mailDto);
 
             return "buying/success";  // 성공 페이지
         } catch (Exception e) {

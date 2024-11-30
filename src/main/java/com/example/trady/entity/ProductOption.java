@@ -22,8 +22,20 @@ public class ProductOption {
     private String size;  // 사이즈 정보
     private long price;  // 가격 (사용자가 판매할 때 입력한 가격)
 
+    @Transient  // DB에 저장하지 않겠다는 표시
+    private String formattedPrice;
+
+    // Getters and setters
+    public String getFormattedPrice() {
+        return formattedPrice;
+    }
+
+    public void setFormattedPrice(String formattedPrice) {
+        this.formattedPrice = formattedPrice;
+    }
+
     // Constructor for easy initialization
-    public ProductOption(Product product, String size, int price) {
+    public ProductOption(Product product, String size, long price) {
         this.product = product;
         this.size = size;
         this.price = price;

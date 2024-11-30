@@ -18,8 +18,9 @@ public class ProductOptionForm {
     private String size;
     private long price;
 
+
     public ProductOption toEntity() {
-        return new ProductOption(id, product, size, price);
+        return new ProductOption(product, size, price);
     }
 
 

@@ -105,7 +105,21 @@ public class ProductController {
         productService.updateFormattedPrice(id, formattedPrice);
 
         // 모든 구매 완료된 상품 조회 (로그인 여부와 관계없이 모든 구매)
-        List<Buying> allBuyings = buyingService.getAllBuyings();  // 이 메서드에서 모든 구매 정보를 조회
+        List<Buying> allBuyings = buyingService.getPurchasesByProduct(id);  // 이 메서드에서 모든 구매 정보를 조회
+
+        // productOptions의 가격 포맷팅
+        for (ProductOption option : productOptions) {
+            if (option.getPrice() != 0) {  // price가 0이 아닌 경우
+                option.setFormattedPrice(new DecimalFormat("#,###").format(option.getPrice()));
+            }
+        }
+
+        // buyings의 가격 포맷팅
+        for (Buying buying : allBuyings) {
+            if (buying.getPrice() != 0) {  // price가 0이 아닌 경우
+                buying.setFormattedPrice(new DecimalFormat("#,###").format(buying.getPrice()));
+            }
+        }
 
         // 모델에 product 추가
         model.addAttribute("product", product);

@@ -37,6 +37,18 @@ public class Buying {
     private long price; // 상품 옵션의 가격
 
 
+    @Transient  // DB에 저장하지 않겠다는 표시
+    private String formattedPrice;
+
+    // Getters and setters
+    public String getFormattedPrice() {
+        return formattedPrice;
+    }
+
+    public void setFormattedPrice(String formattedPrice) {
+        this.formattedPrice = formattedPrice;
+    }
+
     // 기본 옵션 설정
     public ProductOption getProductOption() {
         if (productOption == null) {

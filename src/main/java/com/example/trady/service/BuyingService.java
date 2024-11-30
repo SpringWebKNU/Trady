@@ -12,5 +12,5 @@ public interface BuyingService {
    Buying createBuyingWithUser(Long productId, Long productOptionId, Member user) throws Exception;
 
    List<Buying> getPurchasesByProduct(Long productId);
-
+   List<Buying> getAllBuyings();
 }

@@ -19,8 +19,10 @@ public class BuyingForm {
     Member member;  // Added reference to Member
     Product product;  // 상품
     ProductOption productOption;  // 선택된 옵션
+    String size;  // 상품 옵션의 사이즈
+    long price;
 
     public Buying toEntity() {
-        return new Buying(member, product, productOption);  // Pass member to entity
+        return new Buying(member, product, productOption,size,price);  // Pass member to entity
     }
 }

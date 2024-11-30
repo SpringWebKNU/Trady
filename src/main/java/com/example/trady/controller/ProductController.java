@@ -104,9 +104,13 @@ public class ProductController {
         // 데이터베이스에 formattedPrice 값 업데이트
         productService.updateFormattedPrice(id, formattedPrice);
 
+        // 모든 구매 완료된 상품 조회 (로그인 여부와 관계없이 모든 구매)
+        List<Buying> allBuyings = buyingService.getAllBuyings();  // 이 메서드에서 모든 구매 정보를 조회
+
         // 모델에 product 추가
         model.addAttribute("product", product);
         model.addAttribute("productOptions", productOptions);
+        model.addAttribute("buyings", allBuyings);  // 모든 구매 정보를 모델에 추가
 
         return "products/show";  // 상세 페이지로 반환
     }

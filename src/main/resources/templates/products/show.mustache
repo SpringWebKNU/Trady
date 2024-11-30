@@ -68,6 +68,23 @@
                     </table>
                 </div>
 
+                <table class="table table-bordered">
+                    <h4>판매완료된 상품</h4>
+                    <thead>
+                    <tr>
+                        <th>사이즈</th>
+                        <th>가격</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#buyings}}
+                        <tr>
+                            <td>{{size}}</td>
+                            <td>{{price}}원</td>
+                        </tr>
+                    {{/buyings}}
+                    </tbody>
+                </table>
 
                 <br>
                 <br>

@@ -42,6 +42,10 @@ public class BuyingServiceImpl implements BuyingService {
         buying.setProduct(product);
         buying.setProductOption(productOption);
 
+        buying.setSize(productOption.getSize());  // size 값 설정
+        buying.setPrice(productOption.getPrice());  // price 값 설정
+
+
         // Buying 저장
         Buying savedBuying = buyingRepository.save(buying);
 
@@ -58,4 +62,10 @@ public class BuyingServiceImpl implements BuyingService {
     public List<Buying> getPurchasesByProduct(Long productId) {
         return buyingRepository.findByProductId(productId);
     }
+
+    public List<Buying> getAllBuyings() {
+        // 모든 구매 정보를 조회하여 반환
+        return buyingRepository.findAll();
+    }
+
 }

@@ -16,4 +16,6 @@ public interface SellingService {
 
     void deleteSelling(Long sellingId);
 
+    Long findLowestPriceByProductId(Long productId);
+
 }

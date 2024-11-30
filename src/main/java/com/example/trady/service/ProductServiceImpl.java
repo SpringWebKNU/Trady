@@ -3,8 +3,8 @@ package com.example.trady.service;
 import com.example.trady.dto.ProductForm;
 import com.example.trady.entity.Pcategory;
 import com.example.trady.entity.Product;
-import com.example.trady.repository.PcategoryRepository;
-import com.example.trady.repository.ProductRepository;
+import com.example.trady.entity.ProductOption;
+import com.example.trady.repository.*;
 import jakarta.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,15 @@ public class ProductServiceImpl implements ProductService {
     private PcategoryRepository pcategoryRepository;
     @Autowired
     private ServletContext servletContext;
+    @Autowired
+    private SellingRepository sellingRepository;
+    @Autowired
+    private BuyingRepository buyingRepository;
+    @Autowired
+    private ProductOptionRepository productOptionRepository;
 
+    @Autowired
+    private  ProductOptionService productOptionService;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, PcategoryRepository pcategoryRepository) {
@@ -45,16 +53,8 @@ public class ProductServiceImpl implements ProductService {
         // 파일 처리
         String filePath = saveFile(productForm.getPimg()); // MultipartFile을 처리
 
-        // 가격 포맷팅: 서버에서 가격을 원화 형식으로 포맷
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        String formattedPrice = formatter.format(productForm.getPprice()); // 가격 포맷팅
-
         // ProductForm을 Product 엔티티로 변환하고, 파일 경로를 설정
         Product product = productForm.toEntity(pcategory, filePath); // filePath와 pdate를 포함
-
-
-        // 포맷팅된 가격을 엔티티에 설정
-        product.setPprice(Long.parseLong(formattedPrice)); // 가격을 포맷팅된 값으로 설정
 
         // pdate가 null인 경우 현재 시간으로 설정
         if (product.getPdate() == null) {
@@ -77,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
 
         // 기존 Product 엔티티 업데이트
         existingProduct.setPname(productForm.getPname());
-        existingProduct.setPprice(productForm.getPprice());
+        //existingProduct.setPprice(productForm.getPprice());
         existingProduct.setPcategory(pcategory);
 
         // pdate가 null인 경우, 이전의 pdate를 그대로 유지하거나 현재 시간을 설정
@@ -130,10 +130,23 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
+    @Transactional
     @Override
     public void deleteProduct(Long id) {
+        // 1. Product를 조회합니다.
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        // ProductOption 삭제
+        productOptionService.deleteByProductId(product.getId());
+        
+        // 2. Selling 테이블에서 해당 Product ID를 참조하는 데이터를 삭제합니다.
+        sellingRepository.deleteBySproduct(product);
+
+        // 2. Selling 테이블에서 해당 Product ID를 참조하는 데이터를 삭제합니다.
+        buyingRepository.deleteByProductOptionId(id);
+
+        // 3. Product를 삭제합니다.
         productRepository.delete(product);
     }
 
@@ -166,4 +179,23 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> search(String keyword) {
         return productRepository.findByPnameContaining(keyword);
     }
+
+    @Override
+    public void updateFormattedPrice(Long id, String formattedPrice) {
+        // 해당 상품을 찾아서 formattedPrice 값 업데이트
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        product.setFormattedPrice(formattedPrice);
+
+        // 데이터베이스에 저장
+        productRepository.save(product);
+    }
+
+
+    // 해당 상품의 모든 옵션 가져오기
+    public List<ProductOption> getProductOptions(Long productId) {
+        return productOptionRepository.findByProductId(productId);
+    }
+
 }

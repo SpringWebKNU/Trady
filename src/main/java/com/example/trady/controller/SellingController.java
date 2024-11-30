@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -64,7 +65,8 @@ public class SellingController {
     public String sellProduct(@PathVariable("id") Long productId,
                               @ModelAttribute SellingForm sellingForm,
                               HttpSession session,
-                              Model model) {
+                              Model model,
+                              RedirectAttributes redirectAttributes) {
 
         // 1. 상품 정보 조회
         Product product = productService.findProductById(productId);
@@ -73,13 +75,16 @@ public class SellingController {
         Member member = (Member) session.getAttribute("currentUser");
         if (member == null) {
             log.error("로그인된 사용자가 없습니다.");
+            redirectAttributes.addFlashAttribute("msg", "로그인된 사용자가 없습니다. 로그인 해주세요.");
             return "redirect:/members/login";  // 로그인 페이지로 리다이렉트
         }
 
-        //  판매 가격 검증 (백만원 초과 금지)
+        // 판매 가격 검증 (백만원 초과 금지)
         long price = sellingForm.getSprice();
         if (price > 1000000) {
+            // 가격 초과 오류 메시지 모델에 추가
             model.addAttribute("error", "가격은 1,000,000원 이하로 설정해야 합니다.");
+            model.addAttribute("product", product);  // 상품 정보도 모델에 추가
             return "products/sell";  // 판매 등록 페이지로 다시 리턴
         }
 
@@ -100,7 +105,7 @@ public class SellingController {
 
         // 4. 판매 정보 저장 및 상품 옵션 생성
         sellingService.createSelling(selling, product, sellingForm.getSize(), sellingForm.getSprice());
-
+        redirectAttributes.addFlashAttribute("msg", "상품 등록이 되었습니다.");
         // 5. 상품 상세 페이지로 리다이렉트
         return "redirect:/products/" + productId;
     }
@@ -132,6 +137,5 @@ public class SellingController {
         // 일반 사용자는 마이페이지로 이동
         return "redirect:/members/mypage";
     }
-
 
 }

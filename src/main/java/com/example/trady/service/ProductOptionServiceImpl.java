@@ -3,14 +3,20 @@ package com.example.trady.service;
 import com.example.trady.entity.Product;
 import com.example.trady.entity.ProductOption;
 import com.example.trady.repository.ProductOptionRepository;
+import com.example.trady.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class ProductOptionServiceImpl implements ProductOptionService{
     private final ProductOptionRepository productOptionRepository;
+
+    @Autowired
+    ProductRepository productRepository;
 
     @Autowired
     public ProductOptionServiceImpl(ProductOptionRepository productOptionRepository) {
@@ -60,4 +66,10 @@ public class ProductOptionServiceImpl implements ProductOptionService{
     public List<ProductOption> findByProduct(Product product) {
         return productOptionRepository.findByProduct(product);
     }
+
+    @Override
+    public Long findLowestPriceByProductId(Long id) {
+        return productOptionRepository.findLowestPriceByProductId(id);
+    }
+
 }

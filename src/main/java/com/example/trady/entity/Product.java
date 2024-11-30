@@ -17,10 +17,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     private String pname;
-    private long pprice;
-    private String formattedPrice;  // 포맷된 가격을 저장할 필드
+
 
     private String pimg;
+
+    // formattedPrice 필드 추가
+    private String formattedPrice;
 
     // Category와 연관 관계 설정
     @ManyToOne
@@ -40,11 +42,9 @@ public class Product {
         return this.pcategory != null && this.pcategory.getId().equals(categoryId);
     }
 
-    public Product(Long id, String pname, long pprice, String formattedPrice, String pimg, Pcategory pcategory, LocalDateTime pdate) {
+    public Product(Long id, String pname, String pimg, Pcategory pcategory, LocalDateTime pdate) {
         this.id = id;
         this.pname = pname;
-        this.pprice = pprice;
-        this.formattedPrice = formattedPrice;
         this.pimg = pimg;
         this.pcategory = pcategory;
         this.pdate = pdate;
@@ -92,20 +92,7 @@ public class Product {
         this.pdate = pdate;
     }
 
-    public long getPprice() {
-        return pprice;
-    }
-
-    public void setPprice(long pprice) {
-        this.pprice = pprice;
-    }
-
-
     public String getFormattedPrice() {
-        if (formattedPrice == null) {
-            DecimalFormat formatter = new DecimalFormat("#,###");
-            formattedPrice = formatter.format(this.pprice);
-        }
         return formattedPrice;
     }
 
@@ -114,9 +101,7 @@ public class Product {
     }
 
     public void logInfo(){
-        log.info("id: {}, pname: {}, pprice: {}, pimg: {}", id, pname, pprice, pimg);
+        log.info("id: {}, pname: {}, pimg: {}", id, pname, pimg);
     }
-
-
 
 }

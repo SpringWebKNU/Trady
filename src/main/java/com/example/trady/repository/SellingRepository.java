@@ -1,9 +1,13 @@
 package com.example.trady.repository;
 
 import com.example.trady.entity.Member;
+import com.example.trady.entity.Product;
 import com.example.trady.entity.Selling;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,4 +16,10 @@ public interface SellingRepository extends JpaRepository<Selling, Long> {
 
     // 사용자별 판매 상품 조회 쿼리
     List<Selling> findByUser(Member user);
+
+    void deleteBySproduct(Product product);
+
+    @Query("SELECT MIN(s.sprice) FROM Selling s WHERE s.sproduct.id = :productId")
+    Long findLowestPriceByProductId(@Param("productId") Long productId);
+
 }

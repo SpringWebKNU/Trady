@@ -24,7 +24,8 @@ public class Buying {
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    Product product;  // 상품
+    @OnDelete(action = OnDeleteAction.CASCADE) // Product 삭제 시 Buying도 삭제
+    private Product product;  // 상품
 
     @ManyToOne
     @JoinColumn(name = "product_option_id", referencedColumnName = "id")

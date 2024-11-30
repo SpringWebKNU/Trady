@@ -1,12 +1,8 @@
 package com.example.trady.controller;
 
-import com.example.trady.entity.ProductOption;
-import com.example.trady.service.PcategoryService;
-import com.example.trady.service.ProductOptionService;
-import com.example.trady.service.ProductService;
+import com.example.trady.entity.*;
+import com.example.trady.service.*;
 import com.example.trady.dto.ProductForm;
-import com.example.trady.entity.Pcategory;
-import com.example.trady.entity.Product;
 import com.example.trady.repository.PcategoryRepository;
 import com.example.trady.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +30,14 @@ public class ProductController {
     @Autowired
     PcategoryService pcategoryService;
 
+    @Autowired
     ProductOptionService productOptionService;
+
+    @Autowired
+    SellingService sellingService;
+
+    @Autowired
+    BuyingService buyingService;
 
     @Autowired
     public ProductController(ProductOptionService productOptionService) {
@@ -43,7 +46,6 @@ public class ProductController {
 
     @Autowired
     private PcategoryRepository pcategoryRepository;
-
 
 
     @GetMapping("/products/new")
@@ -58,29 +60,55 @@ public class ProductController {
         return "redirect:/products/" + savedProduct.getId();
     }
 
-
     @GetMapping("/products/all")
     public String all(Model model) {
         List<Product> products = productService.findAllProducts();
 
+        // 각 제품에 대해 최저가 조회 및 포맷팅
+        for (Product product : products) {
+            // 각 제품에 대해 최저가를 찾음
+            Long lowestPrice = productOptionService.findLowestPriceByProductId(product.getId());
+
+            // 가격 포맷팅 (판매 정보가 없는 경우 "-" 표시)
+            String formattedPrice = (lowestPrice != null)
+                    ? new DecimalFormat("#,###").format(lowestPrice)
+                    : "-";
+
+            // 포맷된 가격을 모델에 추가 (각 제품마다)
+            product.setFormattedPrice(formattedPrice);  // Product에 formattedPrice를 세팅
+
+        }
+
         model.addAttribute("products", products);
-        return "products/all";
+        return "products/all";  // 제품 목록을 표시하는 뷰로 반환
     }
 
-
-    // 상세 페이지
-    // 데이터 조회 요청 접수
     @GetMapping("/products/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         Product product = productService.findProductById(id);
 
-        // 가격 포맷팅
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        String formattedPrice = formatter.format(product.getPprice());  // 가격 포맷팅
+        // 상품의 옵션들 가져오기
+        List<ProductOption> productOptions = productService.getProductOptions(product.getId());
 
+        // 판매 테이블에서 최저가 조회
+        Long lowestPrice = productOptionService.findLowestPriceByProductId(id);
+
+        // 가격 포맷팅 (판매 정보가 없는 경우 "-" 표시)
+        String formattedPrice = (lowestPrice != null)
+                ? new DecimalFormat("#,###").format(lowestPrice)
+                : "-";
+
+        // 포맷된 가격을 Product 객체에 세팅
+        product.setFormattedPrice(formattedPrice);
+
+        // 데이터베이스에 formattedPrice 값 업데이트
+        productService.updateFormattedPrice(id, formattedPrice);
+
+        // 모델에 product 추가
         model.addAttribute("product", product);
-        model.addAttribute("formattedPrice", formattedPrice); // 포맷된 가격 추가
-        return "products/show";
+        model.addAttribute("productOptions", productOptions);
+
+        return "products/show";  // 상세 페이지로 반환
     }
 
 

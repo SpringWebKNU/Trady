@@ -10,6 +10,8 @@ import com.example.trady.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class BuyingServiceImpl implements BuyingService {
 
@@ -52,4 +54,8 @@ public class BuyingServiceImpl implements BuyingService {
         return savedBuying;
     }
 
+
+    public List<Buying> getPurchasesByProduct(Long productId) {
+        return buyingRepository.findByProductId(productId);
+    }
 }

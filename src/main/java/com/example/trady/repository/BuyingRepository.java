@@ -7,11 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface BuyingRepository extends JpaRepository<Buying,Long> {
 
     void deleteByProductOptionId(Long productOptionId);
+
     @Modifying
     @Query("UPDATE Buying b SET b.productOption = NULL WHERE b.productOption.id = :productOptionId")
     void updateProductOptionToDefault(@Param("productOptionId") Long productOptionId);
+
+    // 특정 상품에 대해 구매된 상품 목록을 조회하는 메소드
+    List<Buying> findByProductId(Long productId);
 }

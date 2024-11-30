@@ -22,4 +22,6 @@ public interface ProductOptionService {
 
     List<ProductOption> findByProduct(Product product);
 
+    Long findLowestPriceByProductId(Long id);
+
 }

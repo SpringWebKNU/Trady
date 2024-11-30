@@ -25,6 +25,18 @@ public class ProductOption {
     @Transient  // DB에 저장하지 않겠다는 표시
     private String formattedPrice;
 
+
+    private boolean isSold = false;  // 기본값은 false (판매되지 않음)
+
+    // 판매된 상품 옵션을 '판매 완료'로 마킹하는 메소드
+    public void markAsSold() {
+        this.isSold = true;
+    }
+
+    public boolean isSold() {
+        return isSold;
+    }
+
     // Getters and setters
     public String getFormattedPrice() {
         return formattedPrice;

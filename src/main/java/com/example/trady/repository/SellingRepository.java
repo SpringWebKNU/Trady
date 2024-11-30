@@ -22,4 +22,6 @@ public interface SellingRepository extends JpaRepository<Selling, Long> {
     @Query("SELECT MIN(s.sprice) FROM Selling s WHERE s.sproduct.id = :productId")
     Long findLowestPriceByProductId(@Param("productId") Long productId);
 
+    @Query("SELECT s FROM Selling s WHERE s.sproduct.id = :productId AND s.size = :size")
+    Selling findByProductAndSize(@Param("productId") Long productId, @Param("size") String size);
 }

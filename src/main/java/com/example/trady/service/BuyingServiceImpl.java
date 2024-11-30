@@ -4,6 +4,7 @@ import com.example.trady.entity.*;
 import com.example.trady.repository.BuyingRepository;
 import com.example.trady.repository.ProductOptionRepository;
 import com.example.trady.repository.ProductRepository;
+import com.example.trady.repository.SellingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +16,15 @@ public class BuyingServiceImpl implements BuyingService {
     private final ProductRepository productRepository;
     private final ProductOptionRepository productOptionRepository;
     private final BuyingRepository buyingRepository;
+    private final SellingRepository sellingRepository;
 
     public BuyingServiceImpl(ProductRepository productRepository,
                              ProductOptionRepository productOptionRepository,
-                             BuyingRepository buyingRepository) {
+                             BuyingRepository buyingRepository, SellingRepository sellingRepository) {
         this.productRepository = productRepository;
         this.productOptionRepository = productOptionRepository;
         this.buyingRepository = buyingRepository;
+        this.sellingRepository = sellingRepository;
     }
 
     @Transactional
@@ -45,6 +48,19 @@ public class BuyingServiceImpl implements BuyingService {
 
         // Buying 저장
         Buying savedBuying = buyingRepository.save(buying);
+
+        // Selling 업데이트
+        Selling selling = sellingRepository.findByProductAndSize(productId, productOption.getSize());
+        if (selling != null && !selling.isSold()) {
+            selling.markAsSold();  // Selling 상태를 '판매 완료'로 변경
+            sellingRepository.save(selling);
+        }
+
+        // ProductOption 업데이트
+        if (!productOption.isSold()) {
+            productOption.markAsSold();  // ProductOption 상태를 '판매 완료'로 변경
+            productOptionRepository.markAsSold(productOptionId);  // DB에 업데이트
+        }
 
         // BUYING 테이블에서 product_option_id를 다른 값으로 업데이트 (NULL을 피하기 위해)
         buyingRepository.updateProductOptionToDefault(productOptionId);

@@ -20,6 +20,22 @@ public class SellingForm {
     String size;
     long sprice;
 
+    private boolean isSold = false;  // 판매 상태 (기본값: false)
+
+    // 판매 완료 상태로 변경하는 메소드
+    public void markAsSold() {
+        this.isSold = true;
+    }
+
+    // Getter와 Setter
+    public boolean isSold() {
+        return isSold;
+    }
+
+    public void setSold(boolean sold) {
+        this.isSold = sold;
+    }
+
     public SellingForm(Long id, Member member, Product sproduct, String size, long sprice) {
         this.id = id;
         this.member = member;  // Pass member here

@@ -46,7 +46,8 @@ public class MailService {
                 "<p><strong>주문 정보:</strong></p>" +
                 "<p>주문하신 상품은 <strong>" + mailDto.getTitle() + "</strong>입니다.</p>" +
                 "<p><strong>가격:</strong> <span class='price'>" + mailDto.getPrice() + " 원</span></p>" +
-                "<p><strong>배송지:</strong> " + mailDto.getAddress() + "</p>" +
+                "<p><strong>배송지:</strong> " + mailDto.getEmail() + "</p>" +
+                "<p><strong>이메일:</strong> " + mailDto.getAddress() + "</p>" +
                 "</div>" +
 
                 // 하단 정보

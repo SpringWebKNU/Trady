@@ -13,21 +13,31 @@
                 <div class="card mb-3 shadow-sm border-0" style="border-radius: 10px;">
                     <div class="row g-0">
                         <div class="col-md-4">
-                            <img src="../images/{{sproduct.pimg}}" alt="{{sproduct.pname}}" class="img-fluid rounded-start" style="height: 200px; object-fit: cover; border-radius: 10px;">
+                            <img src="../images/uploads/{{sproduct.pimg}}" alt="{{sproduct.pname}}" class="img-fluid rounded-start" style="height: 200px; object-fit: cover; border-radius: 10px;">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title" style="font-size: 1.2rem; font-weight: 500;">{{sproduct.pname}}</h5>
                                 <p class="card-text" style="font-size: 1rem;">판매 가격: <strong>{{sprice}}원</strong></p>
                                 <p class="card-text" style="font-size: 0.9rem;">옵션: {{size}}</p>
-                                <div class="d-flex justify-content-between mt-2">
-                                    <form action="/selling/{{id}}/delete" method="POST" style="display: inline;">
-                                        <button type="submit" class="btn btn-danger btn-sm" style="font-size: 0.8rem; border-radius: 5px;"
-                                                onclick="return confirm('정말 삭제하시겠습니까?');">
-                                            삭제하기
-                                        </button>
-                                    </form>
-                                </div>
+                                {{#isSold}}
+                                    <p class="text-center" style="font-size: 1.2rem; font-weight: bold; color: #dc3545; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; padding: 5px;">
+                                        <i class="fas fa-check-circle"></i> 판매 완료
+                                    </p>
+                                {{/isSold}}
+
+                                {{^isSold}}
+                                    <div class="d-flex justify-content-between mt-2">
+                                        <p class="text-center" style="font-size: 1.2rem; font-weight: bold; color: #007bff; background-color: #d1ecf1; border: 1px solid #bee5eb; border-radius: 5px; padding: 5px;">
+                                            <i class="fas fa-tags"></i> 판매중
+                                        </p>
+                                        <form action="/selling/{{id}}/delete" method="POST" style="display: inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm" style="font-size: 0.9rem; border-radius: 5px;" onclick="return confirm('정말 삭제하시겠습니까?');">
+                                                판매 취소
+                                            </button>
+                                        </form>
+                                    </div>
+                                {{/isSold}}
                             </div>
                         </div>
                     </div>

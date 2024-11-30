@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MailDto {
+    private String email;
     private String address;
     private String title;
     private String message;
@@ -17,6 +18,15 @@ public class MailDto {
     private String price; // 가격
 
     // getter, setter 추가
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getAddress() {
         return address;

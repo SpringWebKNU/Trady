@@ -86,7 +86,7 @@ public class BuyingController {
             String productName = buying.getProduct().getPname();
             String size = buying.getProductOption().getSize();
             String price = String.valueOf(buying.getProductOption().getPrice());
-            String productImageUrl = buying.getProduct().getPimg();
+            String address = member.getAddr();
 
             // 이메일 발송
             // 이메일 발송
@@ -95,6 +95,7 @@ public class BuyingController {
             mailDto.setTitle(productName);
             mailDto.setSize(size);
             mailDto.setPrice(price);
+            mailDto.setEmail(address);
 
             mailService.mailSend(mailDto);
 

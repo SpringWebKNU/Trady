@@ -57,13 +57,12 @@
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
-                                            <h5 class="card-title" style="font-size: 1.2rem; font-weight: 500;">{{sproduct.pname}}</h5>
-                                            <p class="card-text" style="font-size: 1rem;">판매 가격: <strong>{{sprice}}원</strong></p>
-                                            <p class="card-text" style="font-size: 0.9rem;">옵션: {{size}}</p>
+                                            <h5 class="card-title" style="font-size: 1.5rem; font-weight: 600; color: #333;">{{sproduct.pname}}</h5>
+                                            <p class="card-text" style="font-size: 1.2rem; color: #28a745; font-weight: 500;">판매 가격: <strong>{{sprice}}원</strong></p>
+                                            <p class="card-text" style="font-size: 1rem; color: #555;">옵션: {{size}}</p>
                                             <div class="d-flex justify-content-between mt-2">
                                                 <form action="/selling/{{id}}/delete" method="POST" style="display: inline;">
-                                                    <button type="submit" class="btn btn-danger btn-sm" style="font-size: 0.8rem; border-radius: 5px;"
-                                                            onclick="return confirm('정말 삭제하시겠습니까?');">
+                                                    <button type="submit" class="btn btn-danger btn-sm" style="font-size: 0.9rem; border-radius: 5px;" onclick="return confirm('정말 삭제하시겠습니까?');">
                                                         삭제하기
                                                     </button>
                                                 </form>
@@ -89,7 +88,28 @@
                     <div class="card-body">
                         <h5 class="card-title">구매 내역</h5>
                         <p class="card-text text-muted">회원님의 구매 내역을 확인하세요.</p>
+                        {{#buyingList}}
+                            <div class="card mb-3 shadow-sm border-0" style="border-radius: 10px;">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="../images/{{product.pimg}}" alt="{{product.pname}}" class="img-fluid rounded-start" style="height: 200px; object-fit: cover; border-radius: 10px;">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title" style="font-size: 1.5rem; font-weight: 600; color: #333;">상품명: {{product.pname}}</h5>
+                                            <p class="card-text" style="font-size: 1.2rem; color: #28a745; font-weight: 500;">구매 가격: <strong>{{price}}원</strong></p>
+                                            <p class="card-text" style="font-size: 1rem; color: #555;">사이즈: {{size}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/buyingList}}
 
+                        {{^buyingList}}
+                            <div class="alert alert-warning" role="alert">
+                                현재 구매 내역이 없습니다.
+                            </div>
+                        {{/buyingList}}
 
                     </div>
                 </div>

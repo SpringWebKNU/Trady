@@ -1,9 +1,6 @@
 package com.example.trady.service;
 
-import com.example.trady.entity.Buying;
-import com.example.trady.entity.Member;
-import com.example.trady.entity.Product;
-import com.example.trady.entity.ProductOption;
+import com.example.trady.entity.*;
 import com.example.trady.repository.BuyingRepository;
 import com.example.trady.repository.ProductOptionRepository;
 import com.example.trady.repository.ProductRepository;
@@ -66,6 +63,11 @@ public class BuyingServiceImpl implements BuyingService {
     public List<Buying> getAllBuyings() {
         // 모든 구매 정보를 조회하여 반환
         return buyingRepository.findAll();
+    }
+
+    @Override
+    public List<Buying> findAllByUser(Member user) {
+        return buyingRepository.findByUser(user);
     }
 
 }

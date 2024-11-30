@@ -1,8 +1,10 @@
 package com.example.trady.controller;
 
 import com.example.trady.dto.MemberForm;
+import com.example.trady.entity.Buying;
 import com.example.trady.entity.Member;
 import com.example.trady.entity.Selling;
+import com.example.trady.service.BuyingService;
 import com.example.trady.service.MemberService;
 import com.example.trady.service.SellingService;
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +32,9 @@ public class MemberController {
 
     @Autowired
     private SellingService sellingService;
+
+    @Autowired
+    private BuyingService buyingService;
 
 
     public MemberController() {
@@ -112,9 +117,13 @@ public class MemberController {
 
         List<Selling> sellingList = sellingService.findAllByUser(currentUser);
 
+        List<Buying> buyingList = buyingService.findAllByUser(currentUser);
+
+
         model.addAttribute("isLoggedIn", isLoggedIn);
         model.addAttribute("currentUserModel", currentUser);
         model.addAttribute("sellingList", sellingList);
+        model.addAttribute("buyingList", buyingList);
 
         return "members/mypage";
     }

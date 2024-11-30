@@ -1,6 +1,8 @@
 package com.example.trady.repository;
 
 import com.example.trady.entity.Buying;
+import com.example.trady.entity.Member;
+import com.example.trady.entity.Selling;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +22,6 @@ public interface BuyingRepository extends JpaRepository<Buying,Long> {
 
     // 특정 상품에 대해 구매된 상품 목록을 조회하는 메소드
     List<Buying> findByProductId(Long productId);
+
+    List<Buying> findByUser(Member user);
 }

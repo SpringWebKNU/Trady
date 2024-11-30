@@ -3,10 +3,7 @@
     <div class="card shadow-sm" style="width: 30rem;">
         <div class="card-body">
             <h4 class="card-title text-center mb-4">로그인</h4>
-            <form action="/members/login" method="post">
-
-
-
+            <form action="/members/login" method="post" onsubmit="saveUsername()">
 
                 {{#error}}
                     <div class="alert alert-danger" role="alert">
@@ -14,17 +11,19 @@
                     </div>
                 {{/error}}
 
-
-
-
                 <div class="mb-3">
                     <label for="username" class="form-label"><strong>아이디:</strong></label>
-                    <input type="text" id="username" class="form-control" name="username"  required>
+                    <input type="text" id="username" class="form-control" name="username" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="password" class="form-label"><strong>비밀번호:</strong></label>
                     <input type="password" id="password" class="form-control" name="password" required>
+                </div>
+
+                <div class="mb-3">
+                    <input type="checkbox" id="rememberUsername" class="form-check-input">
+                    <label for="rememberUsername" class="form-check-label">아이디 저장하기</label>
                 </div>
 
                 <hr>
@@ -36,4 +35,31 @@
         </div>
     </div>
 </div>
+<script>
+    // 페이지 로드 시 localStorage에 저장된 username을 입력 필드에 설정
+    document.addEventListener("DOMContentLoaded", function() {
+        const savedUsername = localStorage.getItem("username");
+        const rememberCheckbox = document.getElementById("rememberUsername");
+
+        if (savedUsername) {
+            document.getElementById("username").value = savedUsername;
+            rememberCheckbox.checked = true;
+        }
+
+        rememberCheckbox.addEventListener("change", function() {
+            if (!this.checked) {
+                localStorage.removeItem("username");
+            }
+        });
+    });
+
+    function saveUsername() {
+        const username = document.getElementById("username").value;
+        const rememberCheckbox = document.getElementById("rememberUsername");
+
+        if (rememberCheckbox.checked) {
+            localStorage.setItem("username", username);
+        }
+    }
+</script>
 {{>layouts/footer}}

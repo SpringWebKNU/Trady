@@ -2,6 +2,7 @@ package com.example.trady.service;
 
 import com.example.trady.entity.Buying;
 import com.example.trady.entity.Member;
+import com.example.trady.entity.Selling;
 
 import java.util.List;
 
@@ -13,4 +14,8 @@ public interface BuyingService {
 
    List<Buying> getPurchasesByProduct(Long productId);
    List<Buying> getAllBuyings();
+
+   List<Buying> findAllByUser(Member user);
+
+
 }
